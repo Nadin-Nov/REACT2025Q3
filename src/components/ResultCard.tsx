@@ -3,16 +3,20 @@ import { Component, type ReactNode } from 'react';
 type Props = {
   name: string;
   description: string;
+  image?: string;
 };
 
 export default class ResultCard extends Component<Props> {
   render(): ReactNode {
-    const { name, description } = this.props;
+    const { name, description, image } = this.props;
 
     return (
-      <div className="result-card border p-2 rounded shadow-sm mb-2">
-        <h3 className="font-bold">{name}</h3>
-        <p className="text-sm text-gray-600">{description}</p>
+      <div className="result-card">
+        {image && <img src={image} alt={name} />}
+        <div>
+          <h3>{name}</h3>
+          <p>{description}</p>
+        </div>
       </div>
     );
   }

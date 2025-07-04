@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react';
 import { Component } from 'react';
 
 import ItemsApi from '../api/itemsApi';
+import ResultList from '../components/ResultsList';
 import searchService from '../services/searchService';
 import type { Character } from '../types';
 
@@ -55,14 +56,17 @@ export default class SearchSection extends Component<
 
     return (
       <div className="search-section">
-        <header>
+        <header className="search-bar">
           <input
+            className="search-input"
             type="text"
             value={searchTerm}
             onChange={this.handleInputChange}
             placeholder="Search characters..."
           />
-          <button onClick={this.handleSearchClick}>Search</button>
+          <button className="search-button" onClick={this.handleSearchClick}>
+            Search
+          </button>
         </header>
 
         <main>
@@ -70,15 +74,7 @@ export default class SearchSection extends Component<
 
           {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
-          {!loading && !error && (
-            <ul>
-              {characters.map((char) => (
-                <li key={char.id}>
-                  <strong>{char.name}</strong>: {char.description}
-                </li>
-              ))}
-            </ul>
-          )}
+          {!loading && !error && <ResultList characters={characters} />}
         </main>
       </div>
     );
