@@ -17,7 +17,7 @@ export default class ItemsApi {
     }
 
     const response = await fetch(
-      `https://rickandmortyapi-sigma.vercel.app/api/character?${params.toString()}`
+      `https://rickandmortyapi.com/api/character?${params.toString()}`
     );
 
     if (!response.ok) {
