@@ -42,6 +42,7 @@ export default class ItemsApi {
     return {
       characters,
       totalPages: data.info.pages,
+      currentPage: page,
     };
   }
 }

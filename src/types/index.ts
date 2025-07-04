@@ -8,6 +8,7 @@ export type Character = {
 export type FetchCharactersResult = {
   characters: Character[];
   totalPages: number;
+  currentPage: number;
 };
 
 export type RickAndMortyApiResponse = {
