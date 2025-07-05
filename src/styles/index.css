@@ -1,5 +1,5 @@
 .main-page {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 20px auto;
   padding: 20px 30px;
   background: var(--color-dark-purple);
@@ -84,11 +84,11 @@ main {
 }
 
 .result-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
   overflow-y: auto;
-  max-height: 60vh;
+  min-height: 200px;
   padding-right: 5px;
 }
 
@@ -103,7 +103,6 @@ main {
 
 .result-card:hover {
   box-shadow: 0 0 18px 4px var(--color-olive-green);
-  transform: scale(1.03);
 }
 
 .result-card h3 {
@@ -197,7 +196,6 @@ main {
 
 .result-card:hover {
   box-shadow: 0 0 18px 4px var(--color-olive-green);
-  transform: scale(1.03);
 }
 
 .result-card img {
