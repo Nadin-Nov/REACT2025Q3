@@ -1,14 +1,29 @@
 import { Component } from 'react';
 
-export default class ErrorButton extends Component {
+type State = {
+  throwError: boolean;
+};
+
+export default class ErrorButton extends Component<
+  Record<string, never>,
+  State
+> {
+  state: State = {
+    throwError: false,
+  };
+
   handleClick = () => {
-    throw new Error('Test');
+    this.setState({ throwError: true });
   };
 
   render() {
+    if (this.state.throwError) {
+      throw new Error('Test');
+    }
+
     return (
       <button onClick={this.handleClick} className="error-button">
-        Throw Error
+        Destroy the Universe
       </button>
     );
   }

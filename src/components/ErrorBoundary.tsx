@@ -25,9 +25,12 @@ export default class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary">
-          <h2>Smthg went wrong</h2>
-          <p>Please try refreshing</p>
+        <div className="error-boundary error-message">
+          <h2>Uh oh… You just broke the multiverse!</h2>
+          <p>
+            Try refreshing the page, Morty. It *might* help… or not. Wubba Lubba
+            Dub Dub!
+          </p>
         </div>
       );
     }

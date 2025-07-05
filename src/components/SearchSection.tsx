@@ -3,6 +3,7 @@ import { Component } from 'react';
 
 import ItemsApi from '../api/itemsApi';
 import ResultList from '../components/ResultsList';
+import SearchBar from '../components/SearchBar';
 import searchService from '../services/searchService';
 import type { Character } from '../types';
 
@@ -56,23 +57,16 @@ export default class SearchSection extends Component<
 
     return (
       <div className="search-section">
-        <header className="search-bar">
-          <input
-            className="search-input"
-            type="text"
-            value={searchTerm}
-            onChange={this.handleInputChange}
-            placeholder="Search characters..."
-          />
-          <button className="search-button" onClick={this.handleSearchClick}>
-            Search
-          </button>
-        </header>
+        <SearchBar
+          value={searchTerm}
+          onChange={this.handleInputChange}
+          onSearch={this.handleSearchClick}
+        />
 
         <main>
           {loading && <p>Loading...</p>}
 
-          {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          {error && <p style={{ color: 'white' }}>Error: {error}</p>}
 
           {!loading && !error && <ResultList characters={characters} />}
         </main>

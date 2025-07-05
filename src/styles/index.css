@@ -1,5 +1,5 @@
 .main-page {
-  max-width: 1440px;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 20px 30px;
   background: var(--color-dark-purple);
@@ -97,7 +97,7 @@ main {
   border-radius: 8px;
   padding: 18px 22px;
   background-color: var(--color-dark-purple);
-  box-shadow: 0 4px 6px rgba(82, 103, 56, 0.3);
+  box-shadow: 0 4px 6px rgba(228, 251, 200, 0.3);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
@@ -239,4 +239,31 @@ main {
   .result-card p {
     font-size: 0.9rem;
   }
+}
+
+.error-message {
+  text-align: center;
+  color: #f5f07a;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem 1rem;
+  user-select: none;
+}
+
+.error-message h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  text-shadow: 0 0 8px #d9d650;
+}
+
+.error-message p {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  max-width: 500px;
+  margin: 0 auto;
+  color: #f9f9a4;
+}
+
+.error-message em {
+  font-style: italic;
+  color: #fff79a;
 }

@@ -21,6 +21,13 @@ export default class ItemsApi {
     );
 
     if (!response.ok) {
+      if (response.status === 404) {
+        return {
+          characters: [],
+          totalPages: 0,
+          currentPage: page,
+        };
+      }
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
 

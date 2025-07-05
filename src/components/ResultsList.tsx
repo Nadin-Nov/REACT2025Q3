@@ -13,7 +13,19 @@ export default class ResultList extends Component<Props> {
     const { characters } = this.props;
 
     if (characters.length === 0) {
-      return <p>No results found</p>;
+      return (
+        <div
+          className="no-results"
+          style={{ padding: '20px', textAlign: 'center' }}
+        >
+          <h3>Uh oh! Nobody here…</h3>
+          <p>Maybe they’re hiding in some crazy alternate dimension!</p>
+          <p>
+            Or Rick broke the multiverse again. Try searching for another
+            character!
+          </p>
+        </div>
+      );
     }
 
     return (
