@@ -4,7 +4,8 @@ export default class Loader extends Component {
   render() {
     return (
       <div className="loader">
-        <p>Loading</p>
+        <div className="spinner"></div>
+        <p>Loading...</p>
       </div>
     );
   }

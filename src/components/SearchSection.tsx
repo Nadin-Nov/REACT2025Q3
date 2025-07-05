@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react';
 import { Component } from 'react';
 
 import ItemsApi from '../api/itemsApi';
+import Loader from '../components/Loader';
 import ResultList from '../components/ResultsList';
 import SearchBar from '../components/SearchBar';
 import searchService from '../services/searchService';
@@ -64,7 +65,7 @@ export default class SearchSection extends Component<
         />
 
         <main>
-          {loading && <p>Loading...</p>}
+          {loading && <Loader />}
 
           {error && <p style={{ color: 'white' }}>Error: {error}</p>}
 
