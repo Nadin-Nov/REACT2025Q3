@@ -5,11 +5,12 @@ type Props = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSearch: MouseEventHandler<HTMLButtonElement>;
+  onEnter: () => void;
 };
 
 export default class SearchBar extends Component<Props> {
   render() {
-    const { value, onChange, onSearch } = this.props;
+    const { value, onChange, onSearch, onEnter } = this.props;
 
     return (
       <div className="search-bar">
@@ -19,6 +20,11 @@ export default class SearchBar extends Component<Props> {
           className="search-input"
           value={value}
           onChange={onChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              onEnter();
+            }
+          }}
         />
         <button className="search-button" onClick={onSearch}>
           Search!

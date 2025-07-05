@@ -62,6 +62,7 @@ export default class SearchSection extends Component<
           value={searchTerm}
           onChange={this.handleInputChange}
           onSearch={this.handleSearchClick}
+          onEnter={this.handleSearchClick}
         />
 
         <main>
