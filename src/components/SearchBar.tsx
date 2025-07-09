@@ -1,35 +1,34 @@
-import type { ChangeEvent, MouseEventHandler } from 'react';
+import type { ChangeEvent, FormEventHandler } from 'react';
 import { Component } from 'react';
 
 type Props = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSearch: MouseEventHandler<HTMLButtonElement>;
-  onEnter: () => void;
+  onSearch: () => void;
 };
 
 export default class SearchBar extends Component<Props> {
+  handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    this.props.onSearch();
+  };
+
   render() {
-    const { value, onChange, onSearch, onEnter } = this.props;
+    const { value, onChange } = this.props;
 
     return (
-      <div className="search-bar">
+      <form className="search-bar" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Type a name…"
           className="search-input"
           value={value}
           onChange={onChange}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              onEnter();
-            }
-          }}
         />
-        <button className="search-button" onClick={onSearch}>
+        <button type="submit" className="search-button">
           Search!
         </button>
-      </div>
+      </form>
     );
   }
 }
