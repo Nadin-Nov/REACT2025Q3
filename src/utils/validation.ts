@@ -1,4 +1,4 @@
-import type { RickAndMortyApiResponse } from '../types/index';
+import type { RickAndMortyApiResponse } from '../types';
 
 export function isValidRickAndMortyApiResponse(
   data: unknown
