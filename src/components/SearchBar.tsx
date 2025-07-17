@@ -4,7 +4,7 @@ import { Component } from 'react';
 type Props = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
+  onSearch: VoidFunction;
 };
 
 export default class SearchBar extends Component<Props> {
