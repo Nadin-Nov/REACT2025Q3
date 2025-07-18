@@ -17,7 +17,7 @@ export default class SearchBar extends Component<Props> {
     const { value, onChange } = this.props;
 
     return (
-      <form className="search-bar" onSubmit={this.handleSubmit}>
+      <form className="search-bar" onSubmit={this.handleSubmit} data-testid="search-bar">
         <input
           type="text"
           placeholder="Type a name…"
