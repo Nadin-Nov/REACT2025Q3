@@ -1,1 +1,2 @@
-npm run test -- --run
+echo "Running tests before push..."
+npx vitest run
