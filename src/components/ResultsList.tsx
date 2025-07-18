@@ -14,10 +14,7 @@ export default class ResultList extends Component<Props> {
 
     if (characters.length === 0) {
       return (
-        <div
-          className="no-results"
-          style={{ padding: '20px', textAlign: 'center' }}
-        >
+        <div className="no-results">
           <h3>Uh oh! Nobody here…</h3>
           <p>Maybe they’re hiding in some crazy alternate dimension!</p>
           <p>

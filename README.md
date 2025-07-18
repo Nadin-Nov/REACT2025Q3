@@ -24,7 +24,7 @@ The app interacts with the external [Rick and Morty API](https://rickandmortyapi
 
 ### Clone the repository
 
-git clone <https://github.com/your_username/NADIN-NOV-REACT2025Q3.git>
+git clone <https://github.com/Nadin-Nov/REACT2025Q3.git>
 
 ### Install dependencies
 

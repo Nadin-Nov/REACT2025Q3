@@ -288,3 +288,8 @@ main {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+}

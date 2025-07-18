@@ -1,7 +1,7 @@
 import { Component } from 'react';
 
 type State = {
-  throwError: boolean;
+  isErrorThrown: boolean;
 };
 
 export default class ErrorButton extends Component<
@@ -9,15 +9,15 @@ export default class ErrorButton extends Component<
   State
 > {
   state: State = {
-    throwError: false,
+    isErrorThrown: false,
   };
 
   handleClick = () => {
-    this.setState({ throwError: true });
+    this.setState({ isErrorThrown: true });
   };
 
   render() {
-    if (this.state.throwError) {
+    if (this.state.isErrorThrown) {
       throw new Error('Test');
     }
 
