@@ -65,11 +65,13 @@ export default class SearchSection extends Component<
         />
 
         <main>
-          {loading && <Loader />}
-
-          {error && <p style={{ color: 'white' }}>Error: {error}</p>}
-
-          {!loading && !error && <ResultList characters={characters} />}
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <p style={{ color: 'white' }}>Error: {error}</p>
+          ) : (
+            <ResultList characters={characters} />
+          )}
         </main>
       </div>
     );
