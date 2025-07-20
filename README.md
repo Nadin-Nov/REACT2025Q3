@@ -14,6 +14,7 @@ It features a character search using the Rick and Morty API with pagination.
 - Vite (build tool and dev server)
 - ESLint
 - Prettier for code formatting
+- Vitest (unit tests with coverage)
 - Husky
 
 ## API
@@ -51,3 +52,15 @@ git clone <https://github.com/Nadin-Nov/REACT2025Q3.git>
 ### Format code with Prettier
 
 `npm run format:fix`
+
+### Tests
+
+This project uses Vitest for unit testing and coverage reports.
+
+Run all tests
+
+`npm run test`
+
+Run tests with coverage report
+
+`npm run test:coverage`
