@@ -5,7 +5,8 @@ import Loader from './Loader';
 describe('Loader', () => {
   it('renders loading spinner and text', () => {
     render(<Loader />);
-    const spinner = document.querySelector('.spinner');
+
+    const spinner = screen.getByTestId('spinner');
     expect(spinner).toBeInTheDocument();
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();

@@ -4,8 +4,15 @@ import { vi } from 'vitest';
 import ItemsApi from '../api/itemsApi';
 import SearchSection from '../components/SearchSection';
 import { mockValidCharacters, mockEmptyCharacters } from '../mocks/characters';
+import type { Character } from '../types';
 
 vi.mock('../api/itemsApi');
+
+vi.mock('../components/ResultsList', () => ({
+  default: ({ characters }: { characters: Character[] }) => (
+    <div data-testid="results-list">{JSON.stringify(characters)}</div>
+  ),
+}));
 
 describe('SearchSection', () => {
   beforeEach(() => {
@@ -35,7 +42,7 @@ describe('SearchSection', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
+      expect(screen.getByTestId('results-list')).toHaveTextContent('Rick Sanchez');
     });
   });
 
@@ -55,7 +62,7 @@ describe('SearchSection', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+      expect(screen.getByTestId('results-list')).toHaveTextContent('[]');
     });
   });
 

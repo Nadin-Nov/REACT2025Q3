@@ -24,7 +24,7 @@ describe('MainPage', () => {
   it('renders main container and child components', () => {
     render(<MainPage />);
 
-    const mainContainer = document.querySelector('.main-page');
+    const mainContainer = screen.getByTestId('main-page');
     expect(mainContainer).toBeInTheDocument();
 
     expect(screen.getByTestId('header')).toBeInTheDocument();

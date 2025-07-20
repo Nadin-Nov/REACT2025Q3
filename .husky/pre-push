@@ -1,2 +1,2 @@
 echo "Running tests before push..."
-npx vitest run
+npm run test:coverage
