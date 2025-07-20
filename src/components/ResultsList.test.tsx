@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { mockValidCharacters } from '../mocks/characters';
+import { mockValidCharacters } from '../__tests__/characters';
 
 import ResultsList from './ResultsList';
 

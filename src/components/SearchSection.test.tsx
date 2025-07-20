@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 
+import { mockValidCharacters, mockEmptyCharacters } from '../__tests__/characters';
 import ItemsApi from '../api/itemsApi';
 import SearchSection from '../components/SearchSection';
-import { mockValidCharacters, mockEmptyCharacters } from '../mocks/characters';
 import type { Character } from '../types';
 
 vi.mock('../api/itemsApi');

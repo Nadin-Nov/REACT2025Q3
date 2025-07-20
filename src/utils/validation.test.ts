@@ -1,4 +1,4 @@
-import {mockValidApiResponse, mockEmptyApiResponse, mockInvalidApiResponse} from '../mocks/apiResponses';
+import {mockValidApiResponse, mockEmptyApiResponse, mockInvalidApiResponse} from '../__tests__/apiResponses';
 
 import { isValidRickAndMortyApiResponse } from './validation';
 

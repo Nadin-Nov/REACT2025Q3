@@ -1,4 +1,4 @@
-import { mockValidApiResponse } from '../mocks/apiResponses';
+import { mockValidApiResponse } from '../__tests__/apiResponses';
 
 import ItemsApi from './itemsApi';
 
