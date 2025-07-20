@@ -7,7 +7,7 @@ import SearchSection from '../components/SearchSection';
 export default class MainPage extends Component {
   render() {
     return (
-      <div className="main-page">
+      <div className="main-page" data-testid="main-page">
         <Header />
         <SearchSection />
         <ErrorButton />
