@@ -1,4 +1,4 @@
-import { Component, type ReactNode } from 'react';
+import type React from 'react';
 
 type Props = {
   name: string;
@@ -6,18 +6,14 @@ type Props = {
   image?: string;
 };
 
-export default class ResultCard extends Component<Props> {
-  render(): ReactNode {
-    const { name, description, image } = this.props;
-
-    return (
-      <div className="result-card">
-        {image && <img src={image} alt={name} />}
-        <div>
-          <h3>{name}</h3>
-          <p>{description}</p>
-        </div>
+export const ResultCard: React.FC<Props> = ({ name, description, image }) => {
+  return (
+    <div className="result-card">
+      {image && <img src={image} alt={name} />}
+      <div>
+        <h3>{name}</h3>
+        <p>{description}</p>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

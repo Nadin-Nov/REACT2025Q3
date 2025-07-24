@@ -1,6 +1,6 @@
-import React from 'react';
+import type { FC } from 'react';
 
-const Loader: React.FC = () => {
+export const Loader: FC = () => {
   return (
     <div className="loader" data-testid="spinner" role="status">
       <div className="spinner"></div>
@@ -8,5 +8,3 @@ const Loader: React.FC = () => {
     </div>
   );
 };
-
-export default Loader;

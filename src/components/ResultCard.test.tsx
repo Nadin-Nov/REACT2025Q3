@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import ResultCard from './ResultCard';
+import {ResultCard} from './ResultCard';
 
 describe('ResultCard', () => {
   const name = 'Rick Sanchez';
