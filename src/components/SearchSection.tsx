@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react';
 import { Component } from 'react';
 
 import ItemsApi from '../api/itemsApi';
-import Loader from '../components/Loader';
+import {Loader} from '../components/Loader';
 import ResultList from '../components/ResultsList';
 import SearchBar from '../components/SearchBar';
 import searchService from '../services/searchService';
