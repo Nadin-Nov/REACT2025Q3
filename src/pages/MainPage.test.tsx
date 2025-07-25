@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import MainPage from '../pages/MainPage';
+import {MainPage} from '../pages/MainPage';
 
 vi.mock('../components/Header', () => {
   const HeaderMock = () => <div data-testid="header" />;

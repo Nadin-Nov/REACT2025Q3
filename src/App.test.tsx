@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import App from './App';
+import {App} from './App';
 
 vi.mock('./pages/MainPage', () => ({
   default: () => <div data-testid="main-page">Mocked MainPage</div>,

@@ -1,4 +1,4 @@
-import SearchService from './searchService';
+import { searchService } from './searchService';
 
 describe('SearchService', () => {
   beforeEach(() => {
@@ -8,15 +8,15 @@ describe('SearchService', () => {
 
   test('getSavedSearchTerm returns saved term from localStorage', () => {
     localStorage.setItem('searchTerm', 'Rick');
-    expect(SearchService.getSavedSearchTerm()).toBe('Rick');
+    expect(searchService.getSavedSearchTerm()).toBe('Rick');
   });
 
   test('getSavedSearchTerm returns empty string if nothing saved', () => {
-    expect(SearchService.getSavedSearchTerm()).toBe('');
+    expect(searchService.getSavedSearchTerm()).toBe('');
   });
 
   test('saveSearchTerm saves term to localStorage', () => {
-    SearchService.saveSearchTerm('Morty');
+    searchService.saveSearchTerm('Morty');
     expect(localStorage.getItem('searchTerm')).toBe('Morty');
   });
 });

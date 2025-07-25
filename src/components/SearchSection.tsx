@@ -4,7 +4,7 @@ import { fetchCharacters } from '../api/itemsApi';
 import { Loader } from '../components/Loader';
 import { ResultsList } from '../components/ResultsList';
 import { SearchBar } from '../components/SearchBar';
-import searchService from '../services/searchService';
+import {searchService} from '../services/searchService';
 import type { Character } from '../types';
 
 export const SearchSection = () => {
