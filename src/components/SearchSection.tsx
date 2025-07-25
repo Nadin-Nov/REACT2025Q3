@@ -1,6 +1,6 @@
 import { useEffect, useState, type ChangeEvent } from 'react';
 
-import ItemsApi from '../api/itemsApi';
+import { fetchCharacters } from '../api/itemsApi';
 import { Loader } from '../components/Loader';
 import { ResultsList } from '../components/ResultsList';
 import { SearchBar } from '../components/SearchBar';
@@ -24,7 +24,7 @@ export const SearchSection = () => {
     setError(null);
 
     try {
-      const result = await ItemsApi.fetchCharacters(term, 1);
+      const result = await fetchCharacters(term, 1);
       setCharacters(result.characters);
     } catch (err) {
       setError((err as Error).message);

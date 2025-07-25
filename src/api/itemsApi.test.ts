@@ -1,6 +1,6 @@
 import { mockValidApiResponse } from '../__tests__/apiResponses';
 
-import ItemsApi from './itemsApi';
+import { fetchCharacters } from './itemsApi';
 
 describe('ItemsApi.fetchCharacters', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('ItemsApi.fetchCharacters', () => {
       })
     ));
 
-    const result = await ItemsApi.fetchCharacters('rick', 1);
+    const result = await fetchCharacters('rick', 1);
 
     expect(result.characters.length).toBeGreaterThan(0);
     expect(result.totalPages).toBe(mockValidApiResponse.info.pages);

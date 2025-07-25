@@ -1,14 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
+import { vi, type Mock } from 'vitest';
 
 import { mockValidCharacters, mockEmptyCharacters } from '../__tests__/characters';
-import ItemsApi from '../api/itemsApi';
-import {SearchSection} from '../components/SearchSection';
+import { fetchCharacters } from '../api/itemsApi';
 import type { Character } from '../types';
 
-vi.mock('../api/itemsApi');
+import { SearchSection } from './SearchSection';
 
-vi.mock('../components/ResultsList', () => ({
+vi.mock('../api/itemsApi', () => ({
+  fetchCharacters: vi.fn(),
+}));
+
+vi.mock('./ResultsList', () => ({
   ResultsList: ({ characters }: { characters: Character[] }) => (
     <div data-testid="results-list">{JSON.stringify(characters)}</div>
   ),
@@ -20,14 +23,14 @@ describe('SearchSection', () => {
   });
 
   test('shows loader while loading', () => {
-    vi.spyOn(ItemsApi, 'fetchCharacters').mockImplementation(() => new Promise(() => {}));
+    (fetchCharacters as Mock).mockImplementation(() => new Promise(() => {}));
 
     render(<SearchSection />);
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
   test('shows characters after search', async () => {
-    vi.spyOn(ItemsApi, 'fetchCharacters').mockResolvedValue({
+    (fetchCharacters as Mock).mockResolvedValue({
       characters: mockValidCharacters,
       totalPages: 1,
       currentPage: 1,
@@ -47,7 +50,7 @@ describe('SearchSection', () => {
   });
 
   test('shows no characters if response is empty', async () => {
-    vi.spyOn(ItemsApi, 'fetchCharacters').mockResolvedValue({
+    (fetchCharacters as Mock).mockResolvedValue({
       characters: mockEmptyCharacters,
       totalPages: 0,
       currentPage: 1,
@@ -67,7 +70,7 @@ describe('SearchSection', () => {
   });
 
   test('shows error message on failure', async () => {
-    vi.spyOn(ItemsApi, 'fetchCharacters').mockRejectedValue(new Error('Network error'));
+    (fetchCharacters as Mock).mockRejectedValue(new Error('Network error'));
 
     render(<SearchSection />);
 
