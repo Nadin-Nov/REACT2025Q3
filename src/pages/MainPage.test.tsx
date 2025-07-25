@@ -11,7 +11,7 @@ vi.mock('../components/Header', () => {
 vi.mock('../components/SearchSection', () => {
   const SearchSectionMock = () => <div data-testid="search-section" />;
   SearchSectionMock.displayName = 'SearchSection';
-  return { default: SearchSectionMock };
+  return { SearchSection: SearchSectionMock };
 });
 
 vi.mock('../components/ErrorButton', () => {

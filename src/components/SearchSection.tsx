@@ -1,79 +1,65 @@
-import type { ChangeEvent } from 'react';
-import { Component } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 
 import ItemsApi from '../api/itemsApi';
-import {Loader} from '../components/Loader';
-import {ResultsList} from '../components/ResultsList';
-import {SearchBar} from '../components/SearchBar';
+import { Loader } from '../components/Loader';
+import { ResultsList } from '../components/ResultsList';
+import { SearchBar } from '../components/SearchBar';
 import searchService from '../services/searchService';
 import type { Character } from '../types';
 
-type State = {
-  searchTerm: string;
-  characters: Character[];
-  loading: boolean;
-  error: string | null;
-};
+export const SearchSection = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-export default class SearchSection extends Component<
-  Record<string, never>,
-  State
-> {
-  state: State = {
-    searchTerm: '',
-    characters: [],
-    loading: false,
-    error: null,
-  };
-
-  componentDidMount() {
+  useEffect(() => {
     const savedTerm = searchService.getSavedSearchTerm();
-    this.setState({ searchTerm: savedTerm });
-    this.loadCharacters(savedTerm).catch(console.error);
-  }
+    setSearchTerm(savedTerm);
+    loadCharacters(savedTerm).catch(console.error);
+  }, []);
 
-  loadCharacters = async (term: string) => {
-    this.setState({ loading: true, error: null });
+  const loadCharacters = async (term: string) => {
+    setLoading(true);
+    setError(null);
 
     try {
       const result = await ItemsApi.fetchCharacters(term, 1);
-      this.setState({ characters: result.characters, loading: false });
-    } catch (error) {
-      this.setState({ error: (error as Error).message, loading: false });
+      setCharacters(result.characters);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: e.target.value });
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
-  handleSearchClick = () => {
-    const trimmedTerm = this.state.searchTerm.trim();
+  const handleSearchClick = () => {
+    const trimmedTerm = searchTerm.trim();
     searchService.saveSearchTerm(trimmedTerm);
-    this.loadCharacters(trimmedTerm).catch(console.error);
+    loadCharacters(trimmedTerm).catch(console.error);
   };
 
-  render() {
-    const { searchTerm, characters, loading, error } = this.state;
+  return (
+    <div className="search-section">
+      <SearchBar
+        value={searchTerm}
+        onChange={handleInputChange}
+        onSearch={handleSearchClick}
+      />
 
-    return (
-      <div className="search-section">
-        <SearchBar
-          value={searchTerm}
-          onChange={this.handleInputChange}
-          onSearch={this.handleSearchClick}
-        />
-
-        <main>
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <p style={{ color: 'white' }}>Error: {error}</p>
-          ) : (
-            <ResultsList characters={characters} />
-          )}
-        </main>
-      </div>
-    );
-  }
-}
+      <main>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <p style={{ color: 'white' }}>Error: {error}</p>
+        ) : (
+          <ResultsList characters={characters} />
+        )}
+      </main>
+    </div>
+  );
+};

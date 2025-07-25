@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 
 import { mockValidCharacters, mockEmptyCharacters } from '../__tests__/characters';
 import ItemsApi from '../api/itemsApi';
-import SearchSection from '../components/SearchSection';
+import {SearchSection} from '../components/SearchSection';
 import type { Character } from '../types';
 
 vi.mock('../api/itemsApi');
