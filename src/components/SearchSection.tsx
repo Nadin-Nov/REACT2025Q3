@@ -4,7 +4,7 @@ import { Component } from 'react';
 import ItemsApi from '../api/itemsApi';
 import {Loader} from '../components/Loader';
 import ResultList from '../components/ResultsList';
-import SearchBar from '../components/SearchBar';
+import {SearchBar} from '../components/SearchBar';
 import searchService from '../services/searchService';
 import type { Character } from '../types';
 

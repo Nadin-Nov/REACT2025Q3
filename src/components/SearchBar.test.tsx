@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import SearchBar from './SearchBar';
+import {SearchBar} from './SearchBar';
 
 describe('SearchBar Component', () => {
   const mockOnChange = vi.fn();

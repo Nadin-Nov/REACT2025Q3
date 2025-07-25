@@ -1,5 +1,4 @@
-import type { ChangeEvent, FormEventHandler } from 'react';
-import { Component } from 'react';
+import type { FC, ChangeEvent, FormEvent } from 'react';
 
 type Props = {
   value: string;
@@ -7,28 +6,26 @@ type Props = {
   onSearch: VoidFunction;
 };
 
-export default class SearchBar extends Component<Props> {
-  handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+export const SearchBar: FC<Props> = ({ value, onChange, onSearch }) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.onSearch();
+    onSearch();
   };
 
-  render() {
-    const { value, onChange } = this.props;
 
-    return (
-      <form className="search-bar" onSubmit={this.handleSubmit} data-testid="search-bar">
-        <input
-          type="text"
-          placeholder="Type a name…"
-          className="search-input"
-          value={value}
-          onChange={onChange}
-        />
-        <button type="submit" className="search-button">
-          Search!
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form className="search-bar" onSubmit={handleSubmit} data-testid="search-bar">
+      <input
+        type="text"
+        placeholder="Type a name…"
+        className="search-input"
+        value={value}
+        onChange={onChange}
+      />
+      <button type="submit" className="search-button">
+        Search!
+      </button>
+    </form>
+  );
 }
+
