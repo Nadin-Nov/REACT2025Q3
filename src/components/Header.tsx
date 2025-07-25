@@ -1,9 +1,10 @@
 import type { FC } from 'react';
 
-export const Header: FC = () => {
-  return (
-    <header className="header">
-      <h1 className="header-title"> Get Schwifty </h1>
-    </header>
-  );
-}
+import { NavMenu } from './NavMenu';
+
+export const Header: FC = () => (
+  <header className="header">
+    <h1 className="header-title">Get Schwifty</h1>
+    <NavMenu />
+  </header>
+);
