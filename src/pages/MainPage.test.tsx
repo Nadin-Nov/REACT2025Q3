@@ -5,7 +5,7 @@ import MainPage from '../pages/MainPage';
 vi.mock('../components/Header', () => {
   const HeaderMock = () => <div data-testid="header" />;
   HeaderMock.displayName = 'Header';
-  return { default: HeaderMock };
+  return { Header: HeaderMock };
 });
 
 vi.mock('../components/SearchSection', () => {
