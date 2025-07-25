@@ -3,7 +3,7 @@ import { Component } from 'react';
 
 import ItemsApi from '../api/itemsApi';
 import {Loader} from '../components/Loader';
-import ResultList from '../components/ResultsList';
+import {ResultsList} from '../components/ResultsList';
 import {SearchBar} from '../components/SearchBar';
 import searchService from '../services/searchService';
 import type { Character } from '../types';
@@ -70,7 +70,7 @@ export default class SearchSection extends Component<
           ) : error ? (
             <p style={{ color: 'white' }}>Error: {error}</p>
           ) : (
-            <ResultList characters={characters} />
+            <ResultsList characters={characters} />
           )}
         </main>
       </div>

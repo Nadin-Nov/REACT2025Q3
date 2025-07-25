@@ -9,7 +9,7 @@ import type { Character } from '../types';
 vi.mock('../api/itemsApi');
 
 vi.mock('../components/ResultsList', () => ({
-  default: ({ characters }: { characters: Character[] }) => (
+  ResultsList: ({ characters }: { characters: Character[] }) => (
     <div data-testid="results-list">{JSON.stringify(characters)}</div>
   ),
 }));

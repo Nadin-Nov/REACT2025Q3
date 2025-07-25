@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import { mockValidCharacters } from '../__tests__/characters';
 
-import ResultsList from './ResultsList';
+import {ResultsList} from './ResultsList';
 
 describe('ResultsList', () => {
   test('renders message when characters array is empty', () => {

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import type { FC } from 'react';
 
 import type { Character } from '../types';
 
@@ -8,10 +8,7 @@ type Props = {
   characters: Character[];
 };
 
-export default class ResultList extends Component<Props> {
-  render() {
-    const { characters } = this.props;
-
+export const ResultsList: FC<Props> = ({ characters }) => {
     if (characters.length === 0) {
       return (
         <div className="no-results">
@@ -25,17 +22,17 @@ export default class ResultList extends Component<Props> {
       );
     }
 
-    return (
-      <div className="result-list">
-        {characters.map((char) => (
-          <ResultCard
-            key={char.id}
-            name={char.name}
-            description={char.description}
-            image={char.image}
-          />
-        ))}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="result-list">
+      {characters.map((char) => (
+        <ResultCard
+          key={char.id}
+          name={char.name}
+          description={char.description}
+          image={char.image}
+        />
+      ))}
+    </div>
+  );
+};
+
