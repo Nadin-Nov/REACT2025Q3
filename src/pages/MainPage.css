@@ -1,0 +1,15 @@
+.main-page {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+}
+
+.main-page__left {
+  flex: 2;
+}
+
+.main-page__right {
+  flex: 1;
+  border-left: 1px solid #ccc;
+  padding-left: 16px;
+}

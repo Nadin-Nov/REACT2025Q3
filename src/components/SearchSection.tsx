@@ -1,63 +1,49 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import { fetchCharacters } from '../api/itemsApi';
 import { Loader } from '../components/Loader';
+import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
 import { SearchBar } from '../components/SearchBar';
-import {searchService} from '../services/searchService';
-import type { Character } from '../types';
+import { useCharacters } from '../hooks/useCharacters';
+import { searchService } from '../services/searchService';
 
 export const SearchSection = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const query = searchParams.get('query') || '';
 
-  useEffect(() => {
-    const savedTerm = searchService.getSavedSearchTerm();
-    setSearchTerm(savedTerm);
-    loadCharacters(savedTerm).catch(console.error);
-  }, []);
+  const [searchTerm, setSearchTerm] = useState(() => query || searchService.getSavedSearchTerm());
 
-  const loadCharacters = async (term: string) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await fetchCharacters(term, 1);
-      setCharacters(result.characters);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { characters, loading, error } = useCharacters(searchTerm, page);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const handleSearchClick = () => {
-    const trimmedTerm = searchTerm.trim();
-    searchService.saveSearchTerm(trimmedTerm);
-    loadCharacters(trimmedTerm).catch(console.error);
+    const trimmed = searchTerm.trim();
+    searchService.saveSearchTerm(trimmed);
+    setSearchParams({ query: trimmed, page: '1' });
+  };
+
+  const goToPage = (newPage: number) => {
+    setSearchParams({ query: searchTerm, page: String(newPage) });
   };
 
   return (
     <div className="search-section">
-      <SearchBar
-        value={searchTerm}
-        onChange={handleInputChange}
-        onSearch={handleSearchClick}
-      />
-
+      <SearchBar value={searchTerm} onChange={handleInputChange} onSearch={handleSearchClick} />
       <main>
         {loading ? (
           <Loader />
         ) : error ? (
           <p style={{ color: 'white' }}>Error: {error}</p>
         ) : (
-          <ResultsList characters={characters} />
+          <>
+            <ResultsList characters={characters} />
+            {characters.length > 0 && <Pagination currentPage={page} onPageChange={goToPage} />}
+          </>
         )}
       </main>
     </div>

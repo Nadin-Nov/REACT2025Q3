@@ -1,8 +1,12 @@
 import type React from 'react';
+import './NotFoundPage.css';
 
 export const NotFoundPage: React.FC = () => (
-  <div style={{ padding: 20, textAlign: 'center' }}>
-    <h1>404 — Page Not Found</h1>
-    <p>404</p>
+  <div className="not-found-page">
+    <div className="not-found-container">
+      <div className="not-found-text">
+        Interphase connector failed to locate multiversal endpoint. Classic.
+      </div>
+    </div>
   </div>
 );

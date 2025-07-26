@@ -1,15 +1,22 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
-import { routes } from './routes/routes';
+import { AboutPage } from './pages/AboutPage';
+import { MainPage } from './pages/MainPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App = () => (
   <BrowserRouter>
     <Header />
     <Routes>
-      {routes.map(({ path, Component }) => (
-        <Route key={path} path={path} element={<Component />} />
-      ))}
+      <Route path="/" element={<MainPage />}>
+        <Route path=":page" element={<MainPage />}>
+          <Route path=":detailsId" element={<MainPage />} />
+        </Route>
+      </Route>
+
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   </BrowserRouter>
 );
