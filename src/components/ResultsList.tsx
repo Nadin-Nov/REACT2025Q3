@@ -27,6 +27,7 @@ export const ResultsList: FC<Props> = ({ characters }) => {
       {characters.map((char) => (
         <ResultCard
           key={char.id}
+          id={char.id}
           name={char.name}
           description={char.description}
           image={char.image}
