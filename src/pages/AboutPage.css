@@ -1,0 +1,36 @@
+.about-page {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background-color: var(--color-dark-purple);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(162, 167, 156, 0.4);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.about-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--color-olive-green);
+  text-shadow: 0 0 6px rgba(162, 167, 156, 0.7);
+}
+
+.about-page p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.about-page a {
+  color: var(--color-olive-green);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.about-page a:hover,
+.about-page a:focus {
+  color: #a7ae7e;
+  text-decoration: underline;
+}

@@ -12,11 +12,13 @@ export const App = () => {
 
       <Route path="/about" element={<AboutPage />} />
 
+      <Route path="/404" element={<NotFoundPage />} />
+
       <Route path="/:page" element={<MainPage />}>
         <Route path=":detailsId?" element={<DetailsPanel />} />
       </Route>
 
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>
   );
 };

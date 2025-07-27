@@ -1,14 +1,30 @@
 import type React from 'react';
+import './AboutPage.css';
 
 export const AboutPage: React.FC = () => (
-  <div style={{ padding: 20 }}>
+  <main className="about-page">
     <h1>About This App</h1>
-    <p>Nadin N.</p>
+    <p>Created by <strong>Nadin N.</strong></p>
     <p>
-      little about rs school{' '}
-      <a href="https://rs.school/courses/reactjs" target="_blank" rel="noreferrer">
-        RS School React
-      </a>.
+      This application was built as part of the{' '}
+      <a
+        href="https://rs.school/courses/reactjs"
+        target="_blank"
+        rel="noreferrer"
+      >
+        RS School React Course
+      </a>
+      .
     </p>
-  </div>
+    <p>
+      Check out my GitHub:{' '}
+      <a
+        href="https://github.com/Nadin-Nov"
+        target="_blank"
+        rel="noreferrer"
+      >
+        github.com/Nadin-Nov
+      </a>
+    </p>
+  </main>
 );

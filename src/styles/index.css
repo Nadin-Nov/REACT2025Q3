@@ -293,3 +293,33 @@
   padding: 20px;
   text-align: center;
 }
+
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-olive-green);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover,
+nav a:focus {
+  background-color: var(--color-olive-green);
+  color: var(--color-bg);
+  outline: none;
+  box-shadow: 0 0 8px var(--color-olive-green);
+}
+
+nav a.active-link {
+  background-color: var(--color-olive-green);
+  color: var(--color-bg);
+  box-shadow: 0 0 12px var(--color-olive-green);
+  pointer-events: none; /* чтобы активная ссылка не кликабельна была */
+}
