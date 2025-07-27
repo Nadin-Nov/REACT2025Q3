@@ -1,5 +1,4 @@
 import type { ChangeEvent } from 'react';
-import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Loader } from '../components/Loader';
@@ -7,7 +6,7 @@ import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
 import { SearchBar } from '../components/SearchBar';
 import { useCharacters } from '../hooks/useCharacters';
-import { searchService } from '../services/searchService';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export const SearchSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,10 +14,7 @@ export const SearchSection = () => {
   const query = searchParams.get('query') ?? '';
   const page = parseInt(searchParams.get('page') ?? '1', 10);
 
-  const [searchTerm, setSearchTerm] = useState(() => {
-    if (query) return query;
-    return searchService.getSavedSearchTerm();
-  });
+  const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', query || '');
 
   const { characters, loading, error, totalPages } = useCharacters(query, page);
 
@@ -28,7 +24,6 @@ export const SearchSection = () => {
 
   const handleSearchClick = () => {
     const trimmed = searchTerm.trim();
-    searchService.saveSearchTerm(trimmed);
     setSearchParams({ query: trimmed, page: '1' });
   };
 
