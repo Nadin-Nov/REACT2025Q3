@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { vi, type Mock } from 'vitest';
 
 import { mockValidCharacters, mockEmptyCharacters } from '../__tests__/characters';
@@ -25,7 +26,12 @@ describe('SearchSection', () => {
   test('shows loader while loading', () => {
     (fetchCharacters as Mock).mockImplementation(() => new Promise(() => {}));
 
-    render(<SearchSection />);
+    render(
+      <MemoryRouter>
+        <SearchSection />
+      </MemoryRouter>
+    );
+
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
 
@@ -36,7 +42,11 @@ describe('SearchSection', () => {
       currentPage: 1,
     });
 
-    render(<SearchSection />);
+    render(
+      <MemoryRouter>
+        <SearchSection />
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'Rick' } });
@@ -56,7 +66,11 @@ describe('SearchSection', () => {
       currentPage: 1,
     });
 
-    render(<SearchSection />);
+    render(
+      <MemoryRouter>
+        <SearchSection />
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
     fireEvent.change(input, { target: { value: 'Nobody' } });
@@ -72,7 +86,11 @@ describe('SearchSection', () => {
   test('shows error message on failure', async () => {
     (fetchCharacters as Mock).mockRejectedValue(new Error('Network error'));
 
-    render(<SearchSection />);
+    render(
+      <MemoryRouter>
+        <SearchSection />
+      </MemoryRouter>
+    );
 
     const button = screen.getByRole('button', { name: /search/i });
     fireEvent.click(button);

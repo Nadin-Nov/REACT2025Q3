@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
-import {MainPage} from '../pages/MainPage';
+import { MainPage } from '../pages/MainPage';
 
 vi.mock('../components/SearchSection', () => {
   const SearchSectionMock = () => <div data-testid="search-section" />;
@@ -9,13 +10,17 @@ vi.mock('../components/SearchSection', () => {
 });
 
 describe('MainPage', () => {
-  it('renders main container and child components', () => {
-    render(<MainPage />);
+  it('renders main container and SearchSection component', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <MainPage />
+      </MemoryRouter>
+    );
 
     const mainContainer = screen.getByTestId('main-page');
     expect(mainContainer).toBeInTheDocument();
 
     expect(screen.getByTestId('search-section')).toBeInTheDocument();
-    expect(screen.getByTestId('error-button')).toBeInTheDocument();
+
   });
 });

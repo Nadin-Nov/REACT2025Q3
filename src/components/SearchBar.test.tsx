@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import {SearchBar} from './SearchBar';
+import { SearchBar } from './SearchBar';
 
 describe('SearchBar Component', () => {
   const mockOnChange = vi.fn();
@@ -22,17 +23,17 @@ describe('SearchBar Component', () => {
     expect(screen.getByDisplayValue('test value')).toBeInTheDocument();
   });
 
-  test('calls onChange when input changes', () => {
+  test('calls onChange when input changes', async () => {
     render(<SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />);
     const input = screen.getByPlaceholderText(/type a name/i);
-    fireEvent.change(input, { target: { value: 'abc' } });
-    expect(mockOnChange).toHaveBeenCalledTimes(1);
+    await userEvent.type(input, 'abc');
+    expect(mockOnChange).toHaveBeenCalledTimes(3);
   });
 
-  test('calls onSearch when form is submitted', () => {
+  test('calls onSearch when form is submitted', async () => {
     render(<SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />);
-    const form = screen.getByTestId('search-bar');
-    fireEvent.submit(form);
+    const button = screen.getByRole('button', { name: /search!/i });
+    await userEvent.click(button);
     expect(mockOnSearch).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,9 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { NavMenu } from './NavMenu';
 
 describe('NavMenu', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('renders navigation links', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
@@ -16,7 +20,7 @@ describe('NavMenu', () => {
   });
 
   it('applies active-link class to active route', () => {
-    const { rerender } = render(
+    render(
       <MemoryRouter initialEntries={['/']}>
         <NavMenu />
       </MemoryRouter>
@@ -28,7 +32,9 @@ describe('NavMenu', () => {
     const aboutLink = screen.getByRole('link', { name: /about/i });
     expect(aboutLink).not.toHaveClass('active-link');
 
-    rerender(
+    cleanup();
+
+    render(
       <MemoryRouter initialEntries={['/about']}>
         <NavMenu />
       </MemoryRouter>
