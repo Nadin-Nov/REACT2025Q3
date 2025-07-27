@@ -1,3 +1,5 @@
+import { fetchCharacterById } from '../api/itemsApi';
+
 const STORAGE_KEY = 'searchTerm';
 
 export const searchService = {
@@ -7,5 +9,9 @@ export const searchService = {
   },
   saveSearchTerm(term: string): void {
     localStorage.setItem(STORAGE_KEY, term);
-  }
-}
+  },
+
+  getCharacterById(id: number) {
+    return fetchCharacterById(id);
+  },
+};

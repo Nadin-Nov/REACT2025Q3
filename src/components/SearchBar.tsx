@@ -12,7 +12,6 @@ export const SearchBar: FC<Props> = ({ value, onChange, onSearch }) => {
     onSearch();
   };
 
-
   return (
     <form className="search-bar" onSubmit={handleSubmit} data-testid="search-bar">
       <input
@@ -27,5 +26,4 @@ export const SearchBar: FC<Props> = ({ value, onChange, onSearch }) => {
       </button>
     </form>
   );
-}
-
+};

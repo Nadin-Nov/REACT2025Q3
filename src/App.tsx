@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import { DetailsPanel } from './components/DetailsPanel';
 import { Header } from './components/Header';
 import { AboutPage } from './pages/AboutPage';
 import { MainPage } from './pages/MainPage';
@@ -10,9 +11,7 @@ export const App = () => (
     <Header />
     <Routes>
       <Route path="/" element={<MainPage />}>
-        <Route path=":page" element={<MainPage />}>
-          <Route path=":detailsId" element={<MainPage />} />
-        </Route>
+        <Route path="details/:detailsId" element={<DetailsPanel />} />
       </Route>
 
       <Route path="/about" element={<AboutPage />} />

@@ -2,8 +2,9 @@ import type {
   Character,
   FetchCharactersResult,
   RickAndMortyApiResponse,
+  RickAndMortyApiCharacter,
 } from '../types/index';
-import { isValidRickAndMortyApiResponse } from '../utils/validation';
+import { isValidRickAndMortyApiResponse, isValidRickAndMortyApiCharacter } from '../utils/validation';
 
 export async function fetchCharacters(
   searchTerm: string,
@@ -49,5 +50,28 @@ export async function fetchCharacters(
     characters,
     totalPages: data.info.pages,
     currentPage: page,
+  };
+}
+
+export async function fetchCharacterById(id: number): Promise<Character> {
+  const response = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status} ${response.statusText}`);
+  }
+
+  const rawData: unknown = await response.json();
+
+  if (!isValidRickAndMortyApiCharacter(rawData)) {
+    throw new Error('Invalid API response structure');
+  }
+
+  const char: RickAndMortyApiCharacter = rawData;
+
+  return {
+    id: char.id,
+    name: char.name,
+    description: `${char.species} - ${char.status} - from ${char.origin.name}`,
+    image: char.image,
   };
 }

@@ -1,4 +1,5 @@
-import { useState, type ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Loader } from '../components/Loader';
@@ -10,12 +11,16 @@ import { searchService } from '../services/searchService';
 
 export const SearchSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
-  const query = searchParams.get('query') || '';
 
-  const [searchTerm, setSearchTerm] = useState(() => query || searchService.getSavedSearchTerm());
+  const query = searchParams.get('query') ?? '';
+  const page = parseInt(searchParams.get('page') ?? '1', 10);
 
-  const { characters, loading, error } = useCharacters(searchTerm, page);
+  const [searchTerm, setSearchTerm] = useState(() => {
+    if (query) return query;
+    return searchService.getSavedSearchTerm();
+  });
+
+  const { characters, loading, error, totalPages } = useCharacters(query, page);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -28,7 +33,8 @@ export const SearchSection = () => {
   };
 
   const goToPage = (newPage: number) => {
-    setSearchParams({ query: searchTerm, page: String(newPage) });
+    if (newPage < 1 || newPage > totalPages) return;
+    setSearchParams({ query, page: String(newPage) });
   };
 
   return (
@@ -42,7 +48,9 @@ export const SearchSection = () => {
         ) : (
           <>
             <ResultsList characters={characters} />
-            {characters.length > 0 && <Pagination currentPage={page} onPageChange={goToPage} />}
+            {characters.length > 0 && (
+              <Pagination currentPage={page} totalPages={totalPages} onPageChange={goToPage} />
+            )}
           </>
         )}
       </main>
