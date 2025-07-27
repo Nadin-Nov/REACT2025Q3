@@ -4,12 +4,14 @@ import { SearchSection } from '../components/SearchSection';
 import './MainPage.css';
 
 export const MainPage = () => {
-  const { detailsId } = useParams();
+  const { detailsId, page } = useParams<{ detailsId?: string; page?: string }>();
+
+  const currentPage = page ?? '1';
 
   return (
     <div className={`main-page ${detailsId ? 'with-details' : 'no-details'}`} data-testid="main-page">
       <div className={`main-page__left ${detailsId ? 'with-details' : 'full-width'}`}>
-        <SearchSection />
+        <SearchSection currentPage={currentPage} />
       </div>
 
       {detailsId && (

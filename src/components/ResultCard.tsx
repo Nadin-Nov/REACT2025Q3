@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 type Props = {
   id: number;
@@ -11,9 +11,13 @@ type Props = {
 
 export const ResultCard: React.FC<Props> = ({ id, name, description, image, currentPage }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const handleClick = () => {
-    navigate(`/${currentPage}/${id}`);
+    navigate({
+      pathname: `/${currentPage}/${id}`,
+      search: searchParams.toString(),
+    });
   };
 
   return (

@@ -11,7 +11,7 @@ type RouteType = {
 };
 
 export const routes: RouteType[] = [
-  { path: '/', Component: MainPage, exact: true },
+  { path: '/:page/:detailsId?', Component: MainPage, exact: false },
   { path: '/about', Component: AboutPage },
   { path: '*', Component: NotFoundPage },
 ];

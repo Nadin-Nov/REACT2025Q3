@@ -12,7 +12,7 @@ export const App = () => {
 
       <Route path="/about" element={<AboutPage />} />
 
-      <Route path=":page" element={<MainPage />}>
+      <Route path="/:page" element={<MainPage />}>
         <Route path=":detailsId?" element={<DetailsPanel />} />
       </Route>
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { fetchCharacterById } from '../api/itemsApi';
 import type { Character } from '../types';
@@ -7,7 +7,8 @@ import type { Character } from '../types';
 import { Loader } from './Loader';
 
 export const DetailsPanel = () => {
-  const { detailsId, page } = useParams<{ detailsId?: string; page: string }>();
+  const { detailsId, page: routePage } = useParams<{ detailsId?: string; page?: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [character, setCharacter] = useState<Character | null>(null);
@@ -41,8 +42,17 @@ export const DetailsPanel = () => {
   }, [detailsId]);
 
   const handleClose = () => {
-    const validPage = page && !isNaN(Number(page)) ? page : '1';
-    navigate(`/${validPage}`);
+    const currentPageFromParams = searchParams.get('page');
+    const fallbackPage = routePage || currentPageFromParams || '1';
+    const query = searchParams.get('query') || '';
+
+    const newSearchParams = new URLSearchParams();
+    if (query) newSearchParams.set('query', query);
+
+    navigate({
+      pathname: `/${fallbackPage}`,
+      search: newSearchParams.toString(),
+    });
   };
 
   if (loading) return <Loader />;

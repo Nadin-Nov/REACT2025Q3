@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Loader } from '../components/Loader';
 import { Pagination } from '../components/Pagination';
@@ -8,13 +9,20 @@ import { SearchBar } from '../components/SearchBar';
 import { useCharacters } from '../hooks/useCharacters';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
-export const SearchSection = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+type Props = {
+  currentPage?: string;
+};
+
+export const SearchSection = ({ currentPage }: Props) => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const query = searchParams.get('query') ?? '';
-  const page = parseInt(searchParams.get('page') ?? '1', 10);
+  const page = parseInt(currentPage ?? '1', 10);
 
-  const [searchTerm, setSearchTerm] = useLocalStorage('searchTerm', query || '');
+  const [, setSearchTermLS] = useLocalStorage('searchTerm', query);
+
+  const [searchTerm, setSearchTerm] = useState(query);
 
   const { characters, loading, error, totalPages } = useCharacters(query, page);
 
@@ -24,13 +32,18 @@ export const SearchSection = () => {
 
   const handleSearchClick = () => {
     const trimmed = searchTerm.trim();
-    setSearchParams({ query: trimmed, page: '1' });
+    setSearchTermLS(trimmed);
+    navigate(`/${1}${trimmed ? `?query=${encodeURIComponent(trimmed)}` : ''}`);
   };
 
   const goToPage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
-    setSearchParams({ query, page: String(newPage) });
+    navigate(`/${newPage}${query ? `?query=${encodeURIComponent(query)}` : ''}`);
   };
+
+  useEffect(() => {
+    setSearchTerm(query);
+  }, [query]);
 
   return (
     <div className="search-section">
