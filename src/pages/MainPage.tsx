@@ -1,18 +1,22 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 
-import './NotFoundPage.css';
-import './MainPage.css';
 import { SearchSection } from '../components/SearchSection';
+import './MainPage.css';
 
 export const MainPage = () => {
+  const { detailsId } = useParams();
+
   return (
-    <div className="main-page" data-testid="main-page">
-      <div className="main-page__left">
+    <div className={`main-page ${detailsId ? 'with-details' : 'no-details'}`} data-testid="main-page">
+      <div className={`main-page__left ${detailsId ? 'with-details' : 'full-width'}`}>
         <SearchSection />
       </div>
-      <div className="main-page__right">
-        <Outlet />
-      </div>
+
+      {detailsId && (
+        <div className="main-page__right">
+          <Outlet />
+        </div>
+      )}
     </div>
   );
 };

@@ -42,7 +42,7 @@ export const SearchSection = () => {
           <p style={{ color: 'white' }}>Error: {error}</p>
         ) : (
           <>
-            <ResultsList characters={characters} />
+            <ResultsList characters={characters} currentPage={page} />
             {characters.length > 0 && (
               <Pagination currentPage={page} totalPages={totalPages} onPageChange={goToPage} />
             )}

@@ -7,7 +7,7 @@ import type { Character } from '../types';
 import { Loader } from './Loader';
 
 export const DetailsPanel = () => {
-  const { detailsId } = useParams<{ detailsId: string }>();
+  const { detailsId, page } = useParams<{ detailsId?: string; page: string }>();
   const navigate = useNavigate();
 
   const [character, setCharacter] = useState<Character | null>(null);
@@ -41,7 +41,8 @@ export const DetailsPanel = () => {
   }, [detailsId]);
 
   const handleClose = () => {
-    navigate('/');
+    const validPage = page && !isNaN(Number(page)) ? page : '1';
+    navigate(`/${validPage}`);
   };
 
   if (loading) return <Loader />;

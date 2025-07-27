@@ -6,13 +6,14 @@ type Props = {
   name: string;
   description: string;
   image?: string;
+  currentPage: number;
 };
 
-export const ResultCard: React.FC<Props> = ({ id, name, description, image }) => {
+export const ResultCard: React.FC<Props> = ({ id, name, description, image, currentPage }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/details/${id}`);
+    navigate(`/${currentPage}/${id}`);
   };
 
   return (

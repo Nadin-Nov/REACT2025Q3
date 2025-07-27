@@ -6,7 +6,7 @@ type PaginationProps = {
 
 export const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
   return (
-    <div className="pagination" style={{ marginTop: '1rem' }}>
+    <div className="pagination">
       <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
         ← Prev
       </button>
