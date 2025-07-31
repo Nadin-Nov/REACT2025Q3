@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
 
-import {Loader} from './Loader';
+import { Loader } from './Loader';
 
 describe('Loader', () => {
   it('renders loading spinner and text', () => {
     render(<Loader />);
 
-    const spinner = screen.getByTestId('spinner');
-    expect(spinner).toBeInTheDocument();
+    const status = screen.getByRole('status');
+    expect(status).toBeInTheDocument();
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
