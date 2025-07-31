@@ -8,7 +8,7 @@ vi.mock('./pages/MainPage', () => ({
 }));
 
 describe('App', () => {
-  test('renders MainPage on /1 route', () => {
+  it('should render MainPage on /1 route', () => {
     render(
       <MemoryRouter initialEntries={['/1']}>
         <App />
