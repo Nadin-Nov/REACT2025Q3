@@ -25,7 +25,10 @@ export default class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-boundary error-message"data-testid="error-boundary">
+        <div
+          className="error-boundary error-message"
+          data-testid="error-boundary"
+        >
           <h2>Uh oh… You just broke the multiverse!</h2>
           <p>
             Try refreshing the page, Morty. It *might* help… or not. Wubba Lubba

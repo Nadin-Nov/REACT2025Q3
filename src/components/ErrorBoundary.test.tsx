@@ -42,6 +42,7 @@ describe('ErrorBoundary', () => {
 
     const fallback = screen.getByTestId('error-boundary');
     expect(fallback).toBeInTheDocument();
+
     expect(fallback).toHaveTextContent(/uh oh/i);
   });
 });
