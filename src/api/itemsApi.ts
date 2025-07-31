@@ -4,7 +4,10 @@ import type {
   RickAndMortyApiResponse,
   RickAndMortyApiCharacter,
 } from '../types/index';
-import { isValidRickAndMortyApiResponse, isValidRickAndMortyApiCharacter } from '../utils/validation';
+import {
+  isValidRickAndMortyApiResponse,
+  isValidRickAndMortyApiCharacter,
+} from '../utils/validation';
 
 export async function fetchCharacters(
   searchTerm: string,
@@ -54,7 +57,9 @@ export async function fetchCharacters(
 }
 
 export async function fetchCharacterById(id: number): Promise<Character> {
-  const response = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/character/${id}`
+  );
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status} ${response.statusText}`);
