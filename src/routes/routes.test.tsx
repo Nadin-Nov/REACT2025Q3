@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { AboutPage } from '../pages/AboutPage';
 import { MainPage } from '../pages/MainPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
