@@ -75,10 +75,6 @@
   outline: none;
 }
 
-/* ⚠️ УДАЛЕНО: глобальный стиль main {
-   display: flex;
-   ... } */
-
 .search-section > main {
   display: flex;
   flex-direction: column;
@@ -119,7 +115,7 @@
 .result-card p {
   margin: 0;
   font-size: 1rem;
-  color: #a7ae7e;
+  color: var(--color-olive-green);
 }
 
 .error-button {
@@ -222,7 +218,7 @@
 .result-card p {
   margin: 0;
   font-size: 1rem;
-  color: #e0e0b0;
+  color: var(--color-olive-green);
 }
 
 @media (max-width: 640px) {

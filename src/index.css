@@ -22,42 +22,24 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 1px solid var(--color-button-border);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #4e0f33;
-  color: #fff;
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
   cursor: pointer;
   transition:
     border-color 0.25s,
-    background-color 0.3s;
+    background-color 0.3s,
+    color 0.3s;
 }
 button:hover {
-  border-color: #526738;
-  background-color: #526738;
+  border-color: var(--color-button-hover-border);
+  background-color: var(--color-button-hover-bg);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #f2e6ea;
-    background-color: #4e0f33;
-  }
-  a:hover {
-    color: #5a3148;
-  }
-  button {
-    background-color: #f2e6ea;
-    color: #4e0f33;
-  }
-  button:hover {
-    background-color: #5a3148;
-    color: #fff;
-    border-color: #5a3148;
-  }
 }
