@@ -1,4 +1,7 @@
-import type { RickAndMortyApiResponse, RickAndMortyApiCharacter } from '../types';
+import type {
+  RickAndMortyApiResponse,
+  RickAndMortyApiCharacter,
+} from '../types';
 
 export function isValidRickAndMortyApiResponse(
   data: unknown
@@ -31,7 +34,9 @@ export function isValidRickAndMortyApiCharacter(
   return isValidCharacter(char);
 }
 
-export function isValidCharacter(char: unknown): char is RickAndMortyApiCharacter {
+export function isValidCharacter(
+  char: unknown
+): char is RickAndMortyApiCharacter {
   if (!isObject(char)) return false;
 
   if (

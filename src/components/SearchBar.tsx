@@ -13,7 +13,11 @@ export const SearchBar: FC<Props> = ({ value, onChange, onSearch }) => {
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSubmit} data-testid="search-bar">
+    <form
+      className="search-bar"
+      onSubmit={handleSubmit}
+      data-testid="search-bar"
+    >
       <input
         type="text"
         placeholder="Type a name…"

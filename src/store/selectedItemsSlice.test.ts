@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 import { mockValidCharacters } from '../__tests__/characters';
 
 import reducer, {
