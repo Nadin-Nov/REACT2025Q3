@@ -1,11 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useDispatch, useSelector } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { vi, describe, it, expect, afterEach } from 'vitest';
+import type { Mock } from 'vitest';
+import { vi, describe, it, expect, afterEach, beforeEach } from 'vitest';
 
 import { ResultCard } from './ResultCard';
 
 const mockNavigate = vi.fn();
+const mockDispatch = vi.fn();
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -16,11 +19,35 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+vi.mock('react-redux', () => ({
+  useDispatch: vi.fn(),
+  useSelector: vi.fn(),
+}));
+
+type RootState = {
+  selectedItems: {
+    items: unknown[];
+  };
+};
+
 describe('ResultCard', () => {
   const id = 42;
   const currentPage = 3;
   const name = 'Rick Sanchez';
   const description = 'Scientist and adventurer';
+  const image = 'test.png';
+
+  beforeEach(() => {
+    (useDispatch as unknown as Mock).mockReturnValue(mockDispatch);
+    (useSelector as unknown as Mock).mockImplementation(
+      (selector: (state: RootState) => unknown): unknown =>
+        selector({
+          selectedItems: { items: [] },
+        } as RootState)
+    );
+    mockDispatch.mockClear();
+    mockNavigate.mockClear();
+  });
 
   afterEach(() => {
     vi.restoreAllMocks();
@@ -92,10 +119,29 @@ describe('ResultCard', () => {
   });
 
   it('should render image when image prop is provided', () => {
-    renderCard({ image: 'test.png' });
+    renderCard({ image });
 
     const img = screen.getByRole('img');
-    expect(img).toHaveAttribute('src', 'test.png');
+    expect(img).toHaveAttribute('src', image);
     expect(img).toHaveAttribute('alt', name);
+  });
+
+  it('should dispatch toggleSelect action on checkbox change', async () => {
+    renderCard({ image });
+
+    const checkbox = screen.getByRole('checkbox');
+    await userEvent.click(checkbox);
+
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: 'selectedItems/toggleSelect',
+      payload: {
+        id,
+        name,
+        description,
+        image,
+        detailsUrl: `/${currentPage}/${id}`,
+      },
+    });
   });
 });
