@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import ErrorBoundary from './ErrorBoundary';
 
@@ -23,7 +24,7 @@ describe('ErrorBoundary', () => {
     console.error = originalConsoleError;
   });
 
-  it('renders children when no error', () => {
+  it('should renders children when no error', () => {
     render(
       <ErrorBoundary>
         <div data-testid="child">thats ok</div>
@@ -33,7 +34,7 @@ describe('ErrorBoundary', () => {
     expect(screen.getByTestId('child')).toBeInTheDocument();
   });
 
-  it('renders fallback UI - child throws', () => {
+  it('should renders fallback UI - child throws', () => {
     render(
       <ErrorBoundary>
         <ProblemChild />
@@ -42,6 +43,7 @@ describe('ErrorBoundary', () => {
 
     const fallback = screen.getByTestId('error-boundary');
     expect(fallback).toBeInTheDocument();
+
     expect(fallback).toHaveTextContent(/uh oh/i);
   });
 });

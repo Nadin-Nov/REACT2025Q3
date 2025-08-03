@@ -5,17 +5,19 @@ import { describe, it, expect } from 'vitest';
 import { Header } from './Header';
 
 describe('Header', () => {
-  it('renders the title', () => {
+  it('should renders the title', () => {
     render(
       <MemoryRouter>
         <Header />
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Get Schwifty');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Get Schwifty'
+    );
   });
 
-  it('renders navigation links', () => {
+  it('should renders navigation links', () => {
     render(
       <MemoryRouter>
         <Header />

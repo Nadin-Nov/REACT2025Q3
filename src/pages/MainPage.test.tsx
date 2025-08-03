@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { expect, vi, describe, it } from 'vitest';
 
 import { MainPage } from '../pages/MainPage';
 
@@ -21,6 +22,5 @@ describe('MainPage', () => {
     expect(mainContainer).toBeInTheDocument();
 
     expect(screen.getByTestId('search-section')).toBeInTheDocument();
-
   });
 });

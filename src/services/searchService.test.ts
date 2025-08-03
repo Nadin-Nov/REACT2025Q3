@@ -1,9 +1,10 @@
+import { describe, expect, beforeEach, test } from 'vitest';
+
 import { searchService } from './searchService';
 
 describe('SearchService', () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.restoreAllMocks();
   });
 
   test('getSavedSearchTerm returns saved term from localStorage', () => {

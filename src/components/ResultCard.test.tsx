@@ -1,10 +1,14 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-// eslint-disable-next-line import/order
-import type * as ReactRouterDom from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
+import { vi, describe, it, expect, afterEach } from 'vitest';
+
+import { ResultCard } from './ResultCard';
+
 const mockNavigate = vi.fn();
 
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof ReactRouterDom>('react-router-dom');
+  const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => mockNavigate,
@@ -12,43 +16,86 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-import { MemoryRouter } from 'react-router-dom';
-
-import { ResultCard } from './ResultCard';
-
 describe('ResultCard', () => {
   const id = 42;
   const currentPage = 3;
   const name = 'Rick Sanchez';
   const description = 'Scientist and adventurer';
 
-  beforeEach(() => {
-    mockNavigate.mockClear();
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it('should render name and description', () => {
+  const renderCard = (props = {}) =>
     render(
       <MemoryRouter>
-        <ResultCard id={id} currentPage={currentPage} name={name} description={description} />
+        <ResultCard
+          id={id}
+          currentPage={currentPage}
+          name={name}
+          description={description}
+          {...props}
+        />
       </MemoryRouter>
     );
+
+  it('should render name and description', () => {
+    renderCard();
 
     expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(name);
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
-  it('should navigate on click', () => {
-    render(
-      <MemoryRouter>
-        <ResultCard id={id} currentPage={currentPage} name={name} description={description} />
-      </MemoryRouter>
-    );
+  it('should navigate on click', async () => {
+    renderCard();
 
-    fireEvent.click(screen.getByRole('button'));
+    await userEvent.click(screen.getByRole('button'));
 
     expect(mockNavigate).toHaveBeenCalledWith({
       pathname: `/${currentPage}/${id}`,
       search: 'foo=bar',
     });
+  });
+
+  it('should navigate on Enter key press', async () => {
+    renderCard();
+
+    const button = screen.getByRole('button');
+    button.focus();
+
+    await userEvent.keyboard('{Enter}');
+
+    expect(mockNavigate).toHaveBeenCalledWith({
+      pathname: `/${currentPage}/${id}`,
+      search: 'foo=bar',
+    });
+  });
+
+  it('should navigate on Space key press', async () => {
+    renderCard();
+
+    const button = screen.getByRole('button');
+    button.focus();
+
+    await userEvent.keyboard(' ');
+
+    expect(mockNavigate).toHaveBeenCalledWith({
+      pathname: `/${currentPage}/${id}`,
+      search: 'foo=bar',
+    });
+  });
+
+  it('should not render image when image prop is missing', () => {
+    renderCard();
+
+    expect(screen.queryByRole('img')).toBeNull();
+  });
+
+  it('should render image when image prop is provided', () => {
+    renderCard({ image: 'test.png' });
+
+    const img = screen.getByRole('img');
+    expect(img).toHaveAttribute('src', 'test.png');
+    expect(img).toHaveAttribute('alt', name);
   });
 });

@@ -1,66 +1,145 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 
-import { mockValidApiResponse } from '../__tests__/apiResponses';
+import {
+  mockValidApiResponse,
+  mockInvalidApiResponse,
+} from '../__tests__/apiResponses';
+import {
+  mockValidCharacters,
+  mockEmptyCharacters,
+} from '../__tests__/characters';
+import type { FetchCharactersResult, Character } from '../types';
 
-import { fetchCharacters } from './itemsApi';
+import * as itemsApi from './itemsApi';
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe('fetchCharacters', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-    vi.unstubAllGlobals();
-  });
-
   it('should fetch and map characters correctly', async () => {
-    vi.stubGlobal('fetch', vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockValidApiResponse),
-      })
-    ));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockValidApiResponse),
+        } as Response)
+      )
+    );
 
-    const result = await fetchCharacters('rick', 1);
+    const result: FetchCharactersResult = await itemsApi.fetchCharacters(
+      'rick',
+      1
+    );
 
-    expect(result.characters.length).toBeGreaterThan(0);
+    expect(result.characters).toEqual(mockValidCharacters);
     expect(result.totalPages).toBe(mockValidApiResponse.info.pages);
     expect(result.currentPage).toBe(1);
   });
 
-  it('should return empty list and zero pages on 404 response', async () => {
-    vi.stubGlobal('fetch', vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 404,
-        statusText: 'Not Found',
-      })
-    ));
+  it('should return empty list and zero pages when 404 returned', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        } as Response)
+      )
+    );
 
-    const result = await fetchCharacters('unknown', 1);
+    const result = await itemsApi.fetchCharacters('unknown', 1);
 
-    expect(result.characters).toEqual([]);
+    expect(result.characters).toEqual(mockEmptyCharacters);
     expect(result.totalPages).toBe(0);
     expect(result.currentPage).toBe(1);
   });
 
-  it('should throw error on non-404 failed response', async () => {
-    vi.stubGlobal('fetch', vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-        status: 500,
-        statusText: 'Internal Server Error',
-      })
-    ));
+  it('should throw error on other HTTP errors', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: false,
+          status: 500,
+          statusText: 'Internal Server Error',
+        } as Response)
+      )
+    );
 
-    await expect(fetchCharacters('rick', 1)).rejects.toThrow('API error: 500 Internal Server Error');
+    await expect(itemsApi.fetchCharacters('rick', 1)).rejects.toThrow(
+      'API error: 500 Internal Server Error'
+    );
   });
 
-  it('should throw error if API response structure is invalid', async () => {
-    vi.stubGlobal('fetch', vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ invalid: 'data' }),
-      })
-    ));
+  it('should throw error on invalid API response structure', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockInvalidApiResponse),
+        } as Response)
+      )
+    );
 
-    await expect(fetchCharacters('rick', 1)).rejects.toThrow('Invalid API response structure');
+    await expect(itemsApi.fetchCharacters('rick', 1)).rejects.toThrow(
+      'Invalid API response structure'
+    );
+  });
+});
+
+describe('fetchCharacterById', () => {
+  it('should fetch and map character correctly', async () => {
+    const mockCharacter = mockValidApiResponse.results[0];
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockCharacter),
+        } as Response)
+      )
+    );
+
+    const character: Character = await itemsApi.fetchCharacterById(1);
+
+    expect(character).toEqual(mockValidCharacters[0]);
+  });
+
+  it('should throw error on HTTP error', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        } as Response)
+      )
+    );
+
+    await expect(itemsApi.fetchCharacterById(999)).rejects.toThrow(
+      'API error: 404 Not Found'
+    );
+  });
+
+  it('should throw error on invalid API response structure', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(mockInvalidApiResponse),
+        } as Response)
+      )
+    );
+
+    await expect(itemsApi.fetchCharacterById(1)).rejects.toThrow(
+      'Invalid API response structure'
+    );
   });
 });

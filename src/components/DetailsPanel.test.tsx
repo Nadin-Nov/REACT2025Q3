@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, afterEach } from 'vitest';
 
 import * as api from '../api/itemsApi';
 
@@ -36,7 +36,7 @@ describe('DetailsPanel', () => {
     render(
       <MemoryRouter initialEntries={['/1/1']}>
         <Routes>
-          <Route path='/:page/:detailsId' element={<DetailsPanel />} />
+          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
         </Routes>
       </MemoryRouter>
     );
@@ -50,40 +50,53 @@ describe('DetailsPanel', () => {
     render(
       <MemoryRouter initialEntries={['/1/1']}>
         <Routes>
-          <Route path='/:page/:detailsId' element={<DetailsPanel />} />
+          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
         </Routes>
       </MemoryRouter>
     );
 
-    await waitFor(() => expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(mockCharacter.name));
-    expect(screen.getByAltText(mockCharacter.name)).toHaveAttribute('src', mockCharacter.image);
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+        mockCharacter.name
+      )
+    );
+    expect(screen.getByAltText(mockCharacter.name)).toHaveAttribute(
+      'src',
+      mockCharacter.image
+    );
     expect(screen.getByText(/status/i)).toBeInTheDocument();
   });
 
   it('should display error if fetchCharacterById throws', async () => {
-    vi.spyOn(api, 'fetchCharacterById').mockRejectedValue(new Error('Fetch error'));
+    vi.spyOn(api, 'fetchCharacterById').mockRejectedValue(
+      new Error('Fetch error')
+    );
 
     render(
       <MemoryRouter initialEntries={['/1/1']}>
         <Routes>
-          <Route path='/:page/:detailsId' element={<DetailsPanel />} />
+          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
         </Routes>
       </MemoryRouter>
     );
 
-    await waitFor(() => expect(screen.getByText(/error/i)).toHaveTextContent('Fetch error'));
+    await waitFor(() =>
+      expect(screen.getByText(/error/i)).toHaveTextContent('Fetch error')
+    );
   });
 
   it('should display error on invalid detailsId', async () => {
     render(
       <MemoryRouter initialEntries={['/1/abc']}>
         <Routes>
-          <Route path='/:page/:detailsId' element={<DetailsPanel />} />
+          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(await screen.findByText(/invalid character id/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/invalid character id/i)
+    ).toBeInTheDocument();
   });
 
   it('should navigate to list view on close button click', async () => {
@@ -92,7 +105,7 @@ describe('DetailsPanel', () => {
     render(
       <MemoryRouter initialEntries={['/1/1?query=rick']}>
         <Routes>
-          <Route path='/:page/:detailsId' element={<DetailsPanel />} />
+          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
         </Routes>
       </MemoryRouter>
     );

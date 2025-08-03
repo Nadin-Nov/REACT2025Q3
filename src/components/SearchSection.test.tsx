@@ -1,8 +1,11 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { vi, type Mock } from 'vitest';
+import { expect, vi, describe, type Mock, beforeEach, test } from 'vitest';
 
-import { mockValidCharacters, mockEmptyCharacters } from '../__tests__/characters';
+import {
+  mockValidCharacters,
+  mockEmptyCharacters,
+} from '../__tests__/characters';
 import { fetchCharacters } from '../api/itemsApi';
 import type { Character } from '../types';
 
@@ -55,7 +58,9 @@ describe('SearchSection', () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByTestId('results-list')).toHaveTextContent('Rick Sanchez');
+      expect(screen.getByTestId('results-list')).toHaveTextContent(
+        'Rick Sanchez'
+      );
     });
   });
 

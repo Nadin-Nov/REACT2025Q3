@@ -1,14 +1,11 @@
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
 
 import { NavMenu } from './NavMenu';
 
 describe('NavMenu', () => {
-  afterEach(() => {
-    cleanup();
-  });
-
-  it('renders navigation links', () => {
+  it('should render navigation links', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <NavMenu />
@@ -19,7 +16,7 @@ describe('NavMenu', () => {
     expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
   });
 
-  it('applies active-link class to active route', () => {
+  it('should apply active-link class to main route', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <NavMenu />
@@ -31,16 +28,19 @@ describe('NavMenu', () => {
 
     const aboutLink = screen.getByRole('link', { name: /about/i });
     expect(aboutLink).not.toHaveClass('active-link');
+  });
 
-    cleanup();
-
+  it('should apply active-link class to about route', () => {
     render(
       <MemoryRouter initialEntries={['/about']}>
         <NavMenu />
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('link', { name: /about/i })).toHaveClass('active-link');
-    expect(screen.getByRole('link', { name: /main/i })).not.toHaveClass('active-link');
+    const aboutLink = screen.getByRole('link', { name: /about/i });
+    expect(aboutLink).toHaveClass('active-link');
+
+    const mainLink = screen.getByRole('link', { name: /main/i });
+    expect(mainLink).not.toHaveClass('active-link');
   });
 });

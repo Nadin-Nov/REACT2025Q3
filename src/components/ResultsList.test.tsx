@@ -1,11 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { vi, describe, it, expect } from 'vitest';
 
 import { ResultsList } from './ResultsList';
 
 vi.mock('./ResultCard', () => ({
   ResultCard: ({ id, name }: { id: number; name: string }) => (
-    <div data-testid="result-card">{name} (ID: {id})</div>
+    <div data-testid="result-card">
+      {name} (ID: {id})
+    </div>
   ),
 }));
 
@@ -13,7 +15,11 @@ describe('ResultsList', () => {
   it('renders no results message if characters list is empty', () => {
     render(<ResultsList characters={[]} currentPage={1} />);
     expect(screen.getByText(/Uh oh! Nobody here…/i)).toBeInTheDocument();
-    expect(screen.getByText(/Maybe they’re hiding in some crazy alternate dimension!/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Maybe they’re hiding in some crazy alternate dimension!/i
+      )
+    ).toBeInTheDocument();
   });
 
   it('renders ResultCard components for each character', () => {
