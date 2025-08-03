@@ -1,0 +1,36 @@
+.theme-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.theme-button {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-olive-green);
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.theme-button.white {
+  background-color: white;
+}
+
+.theme-button.black {
+  background-color: black;
+}
+
+.theme-button.active {
+  border-color: #a7be33;
+  box-shadow: 0 0 12px 3px #a7be33;
+}
+
+.theme-button:hover,
+.theme-button:focus {
+  outline: none;
+  box-shadow: 0 0 10px var(--color-olive-green);
+}

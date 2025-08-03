@@ -12,10 +12,11 @@
 
 .header {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   padding-bottom: 15px;
   border-bottom: 2px solid var(--color-olive-green);
+  gap: 1rem;
 }
 
 .header-title {
@@ -99,7 +100,9 @@
   padding: 18px 22px;
   background-color: var(--color-dark-purple);
   box-shadow: 0 4px 6px rgba(228, 251, 200, 0.3);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .result-card:hover {
@@ -192,7 +195,9 @@
   padding: 18px 22px;
   background-color: var(--color-dark-purple);
   box-shadow: 0 4px 6px rgba(82, 103, 56, 0.3);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .result-card:hover {
@@ -278,7 +283,7 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid rgba(0,0,0,0.1);
+  border: 4px solid rgba(0, 0, 0, 0.1);
   border-top-color: #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -286,7 +291,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .no-results {
@@ -306,7 +313,9 @@ nav a {
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 nav a:hover,
@@ -321,5 +330,5 @@ nav a.active-link {
   background-color: var(--color-olive-green);
   color: var(--color-bg);
   box-shadow: 0 0 12px var(--color-olive-green);
-  pointer-events: none; /* чтобы активная ссылка не кликабельна была */
+  pointer-events: none;
 }
