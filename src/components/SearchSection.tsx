@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { Flyout } from '../components/Flyout';
 import { Loader } from '../components/Loader';
 import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
@@ -74,6 +75,7 @@ export const SearchSection = ({ currentPage }: Props) => {
           </>
         )}
       </main>
+      <Flyout />
     </div>
   );
 };

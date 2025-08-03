@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { RootState } from '../store';
 import { toggleSelect } from '../store/selectedItemsSlice';
 
+import './ResultCard.css';
+
 type Props = {
   id: number;
   name: string;
@@ -60,14 +62,12 @@ export const ResultCard: React.FC<Props> = ({
           handleClick();
         }
       }}
-      style={{ cursor: 'pointer', position: 'relative' }}
     >
       <input
         type="checkbox"
         checked={isSelected}
         onChange={handleCheckboxChange}
         onClick={(e) => e.stopPropagation()}
-        style={{ position: 'absolute', top: 10, left: 10, zIndex: 10 }}
         aria-label={`Select ${name}`}
       />
 
