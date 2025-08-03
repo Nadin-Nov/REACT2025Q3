@@ -7,7 +7,10 @@ import type { Character } from '../types';
 import { Loader } from './Loader';
 
 export const DetailsPanel = () => {
-  const { detailsId, page: routePage } = useParams<{ detailsId?: string; page?: string }>();
+  const { detailsId, page: routePage } = useParams<{
+    detailsId?: string;
+    page?: string;
+  }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -49,7 +52,7 @@ export const DetailsPanel = () => {
     const newSearchParams = new URLSearchParams();
     if (query) newSearchParams.set('query', query);
 
-    navigate({
+    void navigate({
       pathname: `/${fallbackPage}`,
       search: newSearchParams.toString(),
     });
@@ -68,9 +71,16 @@ export const DetailsPanel = () => {
       </button>
       <h2>{character.name}</h2>
       <img src={character.image} alt={character.name} />
-      <p><strong>Status:</strong> {character.description.split(' - ')[1]}</p>
-      <p><strong>Species:</strong> {character.description.split(' - ')[0]}</p>
-      <p><strong>Origin:</strong> {character.description.split(' - ')[2].replace('from ', '')}</p>
+      <p>
+        <strong>Status:</strong> {character.description.split(' - ')[1]}
+      </p>
+      <p>
+        <strong>Species:</strong> {character.description.split(' - ')[0]}
+      </p>
+      <p>
+        <strong>Origin:</strong>{' '}
+        {character.description.split(' - ')[2].replace('from ', '')}
+      </p>
     </div>
   );
 };

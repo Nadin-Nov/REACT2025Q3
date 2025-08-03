@@ -1,5 +1,9 @@
 import type React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import type { RootState } from '../store';
+import { toggleSelect } from '../store/selectedItemsSlice';
 
 type Props = {
   id: number;
@@ -9,12 +13,36 @@ type Props = {
   currentPage: number;
 };
 
-export const ResultCard: React.FC<Props> = ({ id, name, description, image, currentPage }) => {
+export const ResultCard: React.FC<Props> = ({
+  id,
+  name,
+  description,
+  image,
+  currentPage,
+}) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
+
+  const isSelected = useSelector((state: RootState) =>
+    state.selectedItems.items.some((item) => item.id === id)
+  );
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    dispatch(
+      toggleSelect({
+        id,
+        name,
+        description,
+        image,
+        detailsUrl: `/${currentPage}/${id}`,
+      })
+    );
+  };
 
   const handleClick = () => {
-    navigate({
+    void navigate({
       pathname: `/${currentPage}/${id}`,
       search: searchParams.toString(),
     });
@@ -32,8 +60,17 @@ export const ResultCard: React.FC<Props> = ({ id, name, description, image, curr
           handleClick();
         }
       }}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', position: 'relative' }}
     >
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={handleCheckboxChange}
+        onClick={(e) => e.stopPropagation()}
+        style={{ position: 'absolute', top: 10, left: 10, zIndex: 10 }}
+        aria-label={`Select ${name}`}
+      />
+
       {image && <img src={image} alt={name} />}
       <div>
         <h3>{name}</h3>
