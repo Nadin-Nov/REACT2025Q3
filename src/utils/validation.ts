@@ -25,7 +25,13 @@ export function isValidRickAndMortyApiResponse(
   return true;
 }
 
-function isValidCharacter(char: unknown): char is RickAndMortyApiCharacter {
+export function isValidRickAndMortyApiCharacter(
+  char: unknown
+): char is RickAndMortyApiCharacter {
+  return isValidCharacter(char);
+}
+
+export function isValidCharacter(char: unknown): char is RickAndMortyApiCharacter {
   if (!isObject(char)) return false;
 
   if (

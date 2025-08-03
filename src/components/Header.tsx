@@ -1,11 +1,10 @@
-import { Component } from 'react';
+import type { FC } from 'react';
 
-export default class Header extends Component {
-  render() {
-    return (
-      <header className="header">
-        <h1 className="header-title"> Get Schwifty </h1>
-      </header>
-    );
-  }
-}
+import { NavMenu } from './NavMenu';
+
+export const Header: FC = () => (
+  <header className="header">
+    <h1 className="header-title">Get Schwifty</h1>
+    <NavMenu />
+  </header>
+);

@@ -1,17 +1,28 @@
-import { Component } from 'react';
+import { Outlet, useParams, Navigate } from 'react-router-dom';
 
-import ErrorButton from '../components/ErrorButton';
-import Header from '../components/Header';
-import SearchSection from '../components/SearchSection';
+import { SearchSection } from '../components/SearchSection';
+import './MainPage.css';
 
-export default class MainPage extends Component {
-  render() {
-    return (
-      <div className="main-page" data-testid="main-page">
-        <Header />
-        <SearchSection />
-        <ErrorButton />
-      </div>
-    );
+export const MainPage = () => {
+  const { detailsId, page } = useParams<{ detailsId?: string; page?: string }>();
+
+  const currentPage = page ?? '1';
+
+  if (!/^\d+$/.test(currentPage) || Number(currentPage) < 1) {
+    return <Navigate to="/404" replace />;
   }
-}
+
+  return (
+    <div className={`main-page ${detailsId ? 'with-details' : 'no-details'}`} data-testid="main-page">
+      <div className={`main-page__left ${detailsId ? 'with-details' : 'full-width'}`}>
+        <SearchSection currentPage={currentPage} />
+      </div>
+
+      {detailsId && (
+        <div className="main-page__right">
+          <Outlet />
+        </div>
+      )}
+    </div>
+  );
+};

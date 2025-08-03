@@ -1,6 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { vi, describe, expect, beforeEach, it } from 'vitest';
 
-import SearchBar from './SearchBar';
+import { SearchBar } from './SearchBar';
 
 describe('SearchBar Component', () => {
   const mockOnChange = vi.fn();
@@ -11,28 +13,51 @@ describe('SearchBar Component', () => {
     mockOnSearch.mockClear();
   });
 
-  test('renders input and button', () => {
-    render(<SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />);
+  it('should render input and button', () => {
+    render(
+      <SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />
+    );
     expect(screen.getByPlaceholderText(/type a name/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /search!/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /search!/i })
+    ).toBeInTheDocument();
   });
 
-  test('input shows value from props', () => {
-    render(<SearchBar value="test value" onChange={mockOnChange} onSearch={mockOnSearch} />);
+  it('should show value from props in input', () => {
+    render(
+      <SearchBar
+        value="test value"
+        onChange={mockOnChange}
+        onSearch={mockOnSearch}
+      />
+    );
     expect(screen.getByDisplayValue('test value')).toBeInTheDocument();
   });
 
-  test('calls onChange when input changes', () => {
-    render(<SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />);
+  it('should call onChange when input changes', async () => {
+    render(
+      <SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />
+    );
     const input = screen.getByPlaceholderText(/type a name/i);
-    fireEvent.change(input, { target: { value: 'abc' } });
-    expect(mockOnChange).toHaveBeenCalledTimes(1);
+    await userEvent.type(input, 'abc');
+    expect(mockOnChange).toHaveBeenCalledTimes(3);
   });
 
-  test('calls onSearch when form is submitted', () => {
-    render(<SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />);
-    const form = screen.getByTestId('search-bar');
-    fireEvent.submit(form);
+  it('should call onSearch when form is submitted by clicking the button', async () => {
+    render(
+      <SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />
+    );
+    const button = screen.getByRole('button', { name: /search!/i });
+    await userEvent.click(button);
+    expect(mockOnSearch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call onSearch when form is submitted by pressing Enter in the input', async () => {
+    render(
+      <SearchBar value="" onChange={mockOnChange} onSearch={mockOnSearch} />
+    );
+    const input = screen.getByPlaceholderText(/type a name/i);
+    await userEvent.type(input, '{Enter}');
     expect(mockOnSearch).toHaveBeenCalledTimes(1);
   });
 });

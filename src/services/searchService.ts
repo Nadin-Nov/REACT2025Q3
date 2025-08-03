@@ -1,10 +1,17 @@
-export default class SearchService {
-  private static STORAGE_KEY = 'searchTerm';
-  static getSavedSearchTerm(): string {
-    const term = localStorage.getItem(SearchService.STORAGE_KEY);
+import { fetchCharacterById } from '../api/itemsApi';
+
+const STORAGE_KEY = 'searchTerm';
+
+export const searchService = {
+  getSavedSearchTerm(): string {
+    const term = localStorage.getItem(STORAGE_KEY);
     return term ?? '';
-  }
-  static saveSearchTerm(term: string): void {
-    localStorage.setItem(SearchService.STORAGE_KEY, term);
-  }
-}
+  },
+  saveSearchTerm(term: string): void {
+    localStorage.setItem(STORAGE_KEY, term);
+  },
+
+  getCharacterById(id: number) {
+    return fetchCharacterById(id);
+  },
+};

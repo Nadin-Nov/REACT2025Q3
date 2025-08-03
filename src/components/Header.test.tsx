@@ -1,10 +1,30 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
 
-import Header from './Header';
+import { Header } from './Header';
 
 describe('Header', () => {
-  it('renders the header title', () => {
-    render(<Header />);
-    expect(screen.getByRole('heading', { name: /get schwifty/i })).toBeInTheDocument();
+  it('should renders the title', () => {
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Get Schwifty'
+    );
+  });
+
+  it('should renders navigation links', () => {
+    render(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('link', { name: /main/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
   });
 });

@@ -1,0 +1,33 @@
+.not-found-page {
+  background-color: #010314;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  font-family: var(--font-family);
+}
+
+.not-found-container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-image: url('/404.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.not-found-text {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7);
+  pointer-events: none;
+}

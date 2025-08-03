@@ -1,79 +1,67 @@
 import type { ChangeEvent } from 'react';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import ItemsApi from '../api/itemsApi';
-import Loader from '../components/Loader';
-import ResultList from '../components/ResultsList';
-import SearchBar from '../components/SearchBar';
-import searchService from '../services/searchService';
-import type { Character } from '../types';
+import { Loader } from '../components/Loader';
+import { Pagination } from '../components/Pagination';
+import { ResultsList } from '../components/ResultsList';
+import { SearchBar } from '../components/SearchBar';
+import { useCharacters } from '../hooks/useCharacters';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
-type State = {
-  searchTerm: string;
-  characters: Character[];
-  loading: boolean;
-  error: string | null;
+type Props = {
+  currentPage?: string;
 };
 
-export default class SearchSection extends Component<
-  Record<string, never>,
-  State
-> {
-  state: State = {
-    searchTerm: '',
-    characters: [],
-    loading: false,
-    error: null,
+export const SearchSection = ({ currentPage }: Props) => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const query = searchParams.get('query') ?? '';
+  const page = parseInt(currentPage ?? '1', 10);
+
+  const [, setSearchTermLS] = useLocalStorage('searchTerm', query);
+
+  const [searchTerm, setSearchTerm] = useState(query);
+
+  const { characters, loading, error, totalPages } = useCharacters(query, page);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
-  componentDidMount() {
-    const savedTerm = searchService.getSavedSearchTerm();
-    this.setState({ searchTerm: savedTerm });
-    this.loadCharacters(savedTerm).catch(console.error);
-  }
-
-  loadCharacters = async (term: string) => {
-    this.setState({ loading: true, error: null });
-
-    try {
-      const result = await ItemsApi.fetchCharacters(term, 1);
-      this.setState({ characters: result.characters, loading: false });
-    } catch (error) {
-      this.setState({ error: (error as Error).message, loading: false });
-    }
+  const handleSearchClick = () => {
+    const trimmed = searchTerm.trim();
+    setSearchTermLS(trimmed);
+    navigate(`/${1}${trimmed ? `?query=${encodeURIComponent(trimmed)}` : ''}`);
   };
 
-  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: e.target.value });
+  const goToPage = (newPage: number) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    navigate(`/${newPage}${query ? `?query=${encodeURIComponent(query)}` : ''}`);
   };
 
-  handleSearchClick = () => {
-    const trimmedTerm = this.state.searchTerm.trim();
-    searchService.saveSearchTerm(trimmedTerm);
-    this.loadCharacters(trimmedTerm).catch(console.error);
-  };
+  useEffect(() => {
+    setSearchTerm(query);
+  }, [query]);
 
-  render() {
-    const { searchTerm, characters, loading, error } = this.state;
-
-    return (
-      <div className="search-section">
-        <SearchBar
-          value={searchTerm}
-          onChange={this.handleInputChange}
-          onSearch={this.handleSearchClick}
-        />
-
-        <main>
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <p style={{ color: 'white' }}>Error: {error}</p>
-          ) : (
-            <ResultList characters={characters} />
-          )}
-        </main>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="search-section">
+      <SearchBar value={searchTerm} onChange={handleInputChange} onSearch={handleSearchClick} />
+      <main>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <p style={{ color: 'white' }}>Error: {error}</p>
+        ) : (
+          <>
+            <ResultsList characters={characters} currentPage={page} />
+            {characters.length > 0 && (
+              <Pagination currentPage={page} totalPages={totalPages} onPageChange={goToPage} />
+            )}
+          </>
+        )}
+      </main>
+    </div>
+  );
+};
