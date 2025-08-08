@@ -2,13 +2,14 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Flyout } from '../components/Flyout';
 import { Loader } from '../components/Loader';
 import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
 import { SearchBar } from '../components/SearchBar';
 import { useCharacters } from '../hooks/useCharacters';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+
+import { Flyout } from './Flyout/Flyout';
 
 type Props = {
   currentPage?: string;
