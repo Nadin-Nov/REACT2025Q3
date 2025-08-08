@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { DetailsPanel } from './components/DetailsPanel';
-import { AboutPage } from './pages/AboutPage';
+import { AboutPage } from './pages/AboutPage/AboutPage';
 import { MainPage } from './pages/MainPage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 
