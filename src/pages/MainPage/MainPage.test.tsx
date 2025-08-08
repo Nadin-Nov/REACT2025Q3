@@ -4,7 +4,7 @@ import { expect, vi, describe, it } from 'vitest';
 
 import { MainPage } from '../MainPage/MainPage';
 
-vi.mock('../components/SearchSection', () => {
+vi.mock('../../components/SearchSection', () => {
   const SearchSectionMock = () => <div data-testid="search-section" />;
   SearchSectionMock.displayName = 'SearchSection';
   return { SearchSection: SearchSectionMock };

@@ -4,7 +4,7 @@ import { vi, it, describe, expect } from 'vitest';
 
 import { App } from './App';
 
-vi.mock('./pages/MainPage', () => ({
+vi.mock('./pages/MainPage/MainPage', () => ({
   MainPage: () => <div data-testid="main-page">Mocked MainPage</div>,
 }));
 
