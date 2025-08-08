@@ -1,9 +1,12 @@
+import clsx from 'clsx';
+import type { FC } from 'react';
 import { Outlet, useParams, Navigate } from 'react-router-dom';
 
-import { SearchSection } from '../components/SearchSection';
-import './MainPage.css';
+import { SearchSection } from '../../components/SearchSection';
 
-export const MainPage = () => {
+import styles from './MainPage.module.css';
+
+export const MainPage: FC = () => {
   const { detailsId, page } = useParams<{
     detailsId?: string;
     page?: string;
@@ -17,17 +20,23 @@ export const MainPage = () => {
 
   return (
     <div
-      className={`main-page ${detailsId ? 'with-details' : 'no-details'}`}
+      className={clsx(
+        styles['main-page'],
+        detailsId ? styles['with-details'] : styles['no-details']
+      )}
       data-testid="main-page"
     >
       <div
-        className={`main-page__left ${detailsId ? 'with-details' : 'full-width'}`}
+        className={clsx(
+          styles['main-page__left'],
+          detailsId ? styles['with-details'] : styles['full-width']
+        )}
       >
         <SearchSection currentPage={currentPage} />
       </div>
 
       {detailsId && (
-        <div className="main-page__right">
+        <div className={styles['main-page__right']}>
           <Outlet />
         </div>
       )}
