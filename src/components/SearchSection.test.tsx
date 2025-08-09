@@ -43,7 +43,7 @@ describe('SearchSection', () => {
 
     renderWithProviders(<SearchSection />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'Rick' } });
 
     const button = screen.getByRole('button', { name: /search/i });
@@ -65,7 +65,7 @@ describe('SearchSection', () => {
 
     renderWithProviders(<SearchSection />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'Nobody' } });
 
     const button = screen.getByRole('button', { name: /search/i });
