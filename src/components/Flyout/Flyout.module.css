@@ -12,10 +12,12 @@
   font-weight: 700;
   font-size: 1rem;
   user-select: none;
-  position: sticky;
-  bottom: 0;
   border-radius: 0 0 12px 12px;
   box-sizing: border-box;
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+  pointer-events: auto;
 }
 
 .buttons {
