@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { vi, describe, it, expect, afterEach } from 'vitest';
@@ -27,6 +27,7 @@ describe('DetailsPanel', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
     mockNavigate.mockClear();
   });
 
@@ -55,15 +56,15 @@ describe('DetailsPanel', () => {
       </MemoryRouter>
     );
 
-    await waitFor(() =>
-      expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-        mockCharacter.name
-      )
+    expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent(
+      mockCharacter.name
     );
+
     expect(screen.getByAltText(mockCharacter.name)).toHaveAttribute(
       'src',
       mockCharacter.image
     );
+
     expect(screen.getByText(/status/i)).toBeInTheDocument();
   });
 
@@ -80,9 +81,7 @@ describe('DetailsPanel', () => {
       </MemoryRouter>
     );
 
-    await waitFor(() =>
-      expect(screen.getByText(/error/i)).toHaveTextContent('Fetch error')
-    );
+    expect(await screen.findByText(/error/i)).toHaveTextContent('Fetch error');
   });
 
   it('should display error on invalid detailsId', async () => {
@@ -100,6 +99,7 @@ describe('DetailsPanel', () => {
   });
 
   it('should navigate to list view on close button click', async () => {
+    const user = userEvent.setup();
     vi.spyOn(api, 'fetchCharacterById').mockResolvedValue(mockCharacter);
 
     render(
@@ -110,10 +110,9 @@ describe('DetailsPanel', () => {
       </MemoryRouter>
     );
 
-    await waitFor(() => screen.getByRole('heading', { level: 2 }));
+    await screen.findByRole('heading', { level: 2 });
 
-    const closeButton = screen.getByRole('button', { name: /✖/ });
-    await userEvent.click(closeButton);
+    await user.click(screen.getByRole('button', { name: /✖/ }));
 
     expect(mockNavigate).toHaveBeenCalledWith({
       pathname: '/1',
