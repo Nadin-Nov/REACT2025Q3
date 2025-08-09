@@ -1,17 +1,44 @@
 :root {
-  --color-dark-purple: #4644459e;
-  --color-deep-purple: #4E0F33;
-  --color-olive-green: #a1a79b;
-  --color-bg: var(--color-deep-purple);
+  --color-bg: #4e0f33;
   --color-text: #fff;
+  --color-olive-green: #a1a79b;
+  --color-dark-purple: #4644459e;
+  --color-deep-purple: #4e0f33;
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --color-button-bg: #4e0f33;
+  --color-button-text: #fff;
+  --color-button-border: transparent;
+  --color-button-hover-bg: #526738;
+  --color-button-hover-border: #526738;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
   min-height: 100vh;
+}
+
+[data-theme='light'] {
+  --color-bg: #f2e6ea;
+  --color-text: #4e0f33;
+  --color-olive-green: #526738;
+  --color-dark-purple: #d9d7d7;
+  --color-deep-purple: #a7ae7e;
+
+  --color-button-bg: #f2e6ea;
+  --color-button-text: #4e0f33;
+  --color-button-border: transparent;
+  --color-button-hover-bg: #5a3148;
+  --color-button-hover-border: #5a3148;
+}
+
+[data-theme='light'] body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }

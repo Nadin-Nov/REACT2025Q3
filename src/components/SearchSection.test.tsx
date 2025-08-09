@@ -1,5 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { expect, vi, describe, type Mock, beforeEach, test } from 'vitest';
 
 import {
@@ -7,6 +6,7 @@ import {
   mockEmptyCharacters,
 } from '../__tests__/characters';
 import { fetchCharacters } from '../api/itemsApi';
+import { renderWithProviders } from '../test-utils/renderWithProviders';
 import type { Character } from '../types';
 
 import { SearchSection } from './SearchSection';
@@ -29,11 +29,7 @@ describe('SearchSection', () => {
   test('shows loader while loading', () => {
     (fetchCharacters as Mock).mockImplementation(() => new Promise(() => {}));
 
-    render(
-      <MemoryRouter>
-        <SearchSection />
-      </MemoryRouter>
-    );
+    renderWithProviders(<SearchSection />);
 
     expect(screen.getByRole('status')).toBeInTheDocument();
   });
@@ -45,13 +41,9 @@ describe('SearchSection', () => {
       currentPage: 1,
     });
 
-    render(
-      <MemoryRouter>
-        <SearchSection />
-      </MemoryRouter>
-    );
+    renderWithProviders(<SearchSection />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'Rick' } });
 
     const button = screen.getByRole('button', { name: /search/i });
@@ -71,13 +63,9 @@ describe('SearchSection', () => {
       currentPage: 1,
     });
 
-    render(
-      <MemoryRouter>
-        <SearchSection />
-      </MemoryRouter>
-    );
+    renderWithProviders(<SearchSection />);
 
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox');
     fireEvent.change(input, { target: { value: 'Nobody' } });
 
     const button = screen.getByRole('button', { name: /search/i });
@@ -91,11 +79,7 @@ describe('SearchSection', () => {
   test('shows error message on failure', async () => {
     (fetchCharacters as Mock).mockRejectedValue(new Error('Network error'));
 
-    render(
-      <MemoryRouter>
-        <SearchSection />
-      </MemoryRouter>
-    );
+    renderWithProviders(<SearchSection />);
 
     const button = screen.getByRole('button', { name: /search/i });
     fireEvent.click(button);

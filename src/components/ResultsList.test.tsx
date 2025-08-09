@@ -3,7 +3,7 @@ import { vi, describe, it, expect } from 'vitest';
 
 import { ResultsList } from './ResultsList';
 
-vi.mock('./ResultCard', () => ({
+vi.mock('./ResultCard/ResultCard', () => ({
   ResultCard: ({ id, name }: { id: number; name: string }) => (
     <div data-testid="result-card">
       {name} (ID: {id})

@@ -1,10 +1,14 @@
-import type React from 'react';
-import './AboutPage.css';
+import clsx from 'clsx';
+import type { FC } from 'react';
 
-export const AboutPage: React.FC = () => (
-  <main className="about-page">
+import styles from './AboutPage.module.css';
+
+export const AboutPage: FC = () => (
+  <main className={clsx(styles['about-page'])}>
     <h1>About This App</h1>
-    <p>Created by <strong>Nadin N.</strong></p>
+    <p>
+      Created by <strong>Nadin N.</strong>
+    </p>
     <p>
       This application was built as part of the{' '}
       <a
@@ -18,11 +22,7 @@ export const AboutPage: React.FC = () => (
     </p>
     <p>
       Check out my GitHub:{' '}
-      <a
-        href="https://github.com/Nadin-Nov"
-        target="_blank"
-        rel="noreferrer"
-      >
+      <a href="https://github.com/Nadin-Nov" target="_blank" rel="noreferrer">
         github.com/Nadin-Nov
       </a>
     </p>

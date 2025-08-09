@@ -5,9 +5,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Loader } from '../components/Loader';
 import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
-import { SearchBar } from '../components/SearchBar';
 import { useCharacters } from '../hooks/useCharacters';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+
+import { Flyout } from './Flyout/Flyout';
+import { SearchBar } from './SearchBar/SearchBar';
 
 type Props = {
   currentPage?: string;
@@ -33,12 +35,16 @@ export const SearchSection = ({ currentPage }: Props) => {
   const handleSearchClick = () => {
     const trimmed = searchTerm.trim();
     setSearchTermLS(trimmed);
-    navigate(`/${1}${trimmed ? `?query=${encodeURIComponent(trimmed)}` : ''}`);
+    void navigate(
+      `/${1}${trimmed ? `?query=${encodeURIComponent(trimmed)}` : ''}`
+    );
   };
 
   const goToPage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
-    navigate(`/${newPage}${query ? `?query=${encodeURIComponent(query)}` : ''}`);
+    void navigate(
+      `/${newPage}${query ? `?query=${encodeURIComponent(query)}` : ''}`
+    );
   };
 
   useEffect(() => {
@@ -47,7 +53,11 @@ export const SearchSection = ({ currentPage }: Props) => {
 
   return (
     <div className="search-section">
-      <SearchBar value={searchTerm} onChange={handleInputChange} onSearch={handleSearchClick} />
+      <SearchBar
+        value={searchTerm}
+        onChange={handleInputChange}
+        onSearch={handleSearchClick}
+      />
       <main>
         {loading ? (
           <Loader />
@@ -57,11 +67,16 @@ export const SearchSection = ({ currentPage }: Props) => {
           <>
             <ResultsList characters={characters} currentPage={page} />
             {characters.length > 0 && (
-              <Pagination currentPage={page} totalPages={totalPages} onPageChange={goToPage} />
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={goToPage}
+              />
             )}
           </>
         )}
       </main>
+      <Flyout />
     </div>
   );
 };

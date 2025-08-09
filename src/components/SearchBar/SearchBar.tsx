@@ -1,5 +1,7 @@
 import type { FC, ChangeEvent, FormEvent } from 'react';
 
+import styles from '../SearchBar/SearchBar.module.css';
+
 type Props = {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -13,15 +15,20 @@ export const SearchBar: FC<Props> = ({ value, onChange, onSearch }) => {
   };
 
   return (
-    <form className="search-bar" onSubmit={handleSubmit} data-testid="search-bar">
+    <form
+      className={styles['search-bar']}
+      onSubmit={handleSubmit}
+      data-testid="search-bar"
+    >
       <input
-        type="text"
+        type="search"
         placeholder="Type a name…"
-        className="search-input"
+        className={styles['search-input']}
         value={value}
         onChange={onChange}
+        aria-label="Search characters"
       />
-      <button type="submit" className="search-button">
+      <button type="submit" className={styles['search-button']}>
         Search!
       </button>
     </form>

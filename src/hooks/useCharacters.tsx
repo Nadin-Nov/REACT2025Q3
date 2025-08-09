@@ -16,11 +16,11 @@ export function useCharacters(searchTerm: string, page: number) {
     setError(null);
 
     fetchCharacters(term, page)
-      .then(result => {
+      .then((result) => {
         setCharacters(result.characters);
         setTotalPages(result.totalPages || 1);
       })
-      .catch(err => {
+      .catch((err) => {
         if (err instanceof Error) setError(err.message);
         else setError(String(err));
         setCharacters([]);
