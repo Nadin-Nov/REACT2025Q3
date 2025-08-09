@@ -1,11 +1,11 @@
-import type React from 'react';
+import type { FC, ChangeEvent, KeyboardEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import type { RootState } from '../store';
-import { toggleSelect } from '../store/selectedItemsSlice';
+import type { RootState } from '../../store';
+import { toggleSelect } from '../../store/selectedItemsSlice';
 
-import './ResultCard.css';
+import styles from './ResultCard.module.css';
 
 type Props = {
   id: number;
@@ -15,7 +15,7 @@ type Props = {
   currentPage: number;
 };
 
-export const ResultCard: React.FC<Props> = ({
+export const ResultCard: FC<Props> = ({
   id,
   name,
   description,
@@ -30,7 +30,7 @@ export const ResultCard: React.FC<Props> = ({
     state.selectedItems.items.some((item) => item.id === id)
   );
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     dispatch(
       toggleSelect({
@@ -50,18 +50,20 @@ export const ResultCard: React.FC<Props> = ({
     });
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
     <div
-      className="result-card"
+      className={styles['result-card']}
       role="button"
       tabIndex={0}
       onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick();
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
       <input
         type="checkbox"
