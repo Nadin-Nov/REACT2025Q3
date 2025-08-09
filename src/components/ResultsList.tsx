@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import type { Character } from '../types';
 
-import { ResultCard } from './ResultCard';
+import { ResultCard } from './ResultCard/ResultCard';
 
 type Props = {
   characters: Character[];

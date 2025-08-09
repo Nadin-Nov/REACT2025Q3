@@ -1,0 +1,97 @@
+.result-card {
+  cursor: pointer;
+  position: relative;
+  border: 2px solid var(--color-olive-green);
+  border-radius: 8px;
+  padding: 18px 22px;
+  background-color: var(--color-dark-purple);
+  box-shadow: 0 4px 6px rgba(228, 251, 200, 0.3);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.result-card:hover {
+  box-shadow: 0 0 18px 4px var(--color-olive-green);
+}
+
+.result-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-olive-green);
+}
+
+.result-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-olive-green);
+}
+
+.result-card input[type='checkbox'] {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+.result-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 2px solid var(--color-olive-green);
+  border-radius: 8px;
+  padding: 18px 22px;
+  background-color: var(--color-dark-purple);
+  box-shadow: 0 4px 6px rgba(82, 103, 56, 0.3);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.result-card:hover {
+  box-shadow: 0 0 18px 4px var(--color-olive-green);
+}
+
+.result-card img {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.result-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-olive-green);
+}
+
+.result-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-olive-green);
+}
+
+@media (max-width: 640px) {
+  .result-card {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+  }
+
+  .result-card img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+  }
+
+  .result-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .result-card p {
+    font-size: 0.9rem;
+  }
+}

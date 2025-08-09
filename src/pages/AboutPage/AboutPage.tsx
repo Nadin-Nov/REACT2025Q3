@@ -1,8 +1,10 @@
-import type React from 'react';
-import './AboutPage.css';
+import clsx from 'clsx';
+import type { FC } from 'react';
 
-export const AboutPage: React.FC = () => (
-  <main className="about-page">
+import styles from './AboutPage.module.css';
+
+export const AboutPage: FC = () => (
+  <main className={clsx(styles['about-page'])}>
     <h1>About This App</h1>
     <p>
       Created by <strong>Nadin N.</strong>

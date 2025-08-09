@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -12,9 +12,11 @@ export type ThemeContextValue = {
   toggleTheme: () => void;
 };
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+type ThemeProviderProps = {
+  children: ReactNode;
+};
+
+export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useLocalStorage<Theme>('theme', 'light');
 
   const toggleTheme = () => {

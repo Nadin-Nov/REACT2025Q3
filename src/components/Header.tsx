@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { NavMenu } from './NavMenu';
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 
 export const Header: FC = () => (
   <header className="header">

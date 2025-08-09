@@ -28,53 +28,6 @@
   text-shadow: 0 0 6px rgba(162, 167, 156, 0.7);
 }
 
-.search-bar {
-  display: flex;
-  width: 100%;
-  max-width: 600px;
-  gap: 10px;
-  padding-bottom: 20px;
-}
-
-.search-input {
-  flex-grow: 1;
-  padding: 12px 16px;
-  font-size: 1.1rem;
-  border: 2px solid var(--color-olive-green);
-  border-radius: 6px;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  outline-offset: 2px;
-  transition: outline 0.3s ease;
-}
-
-.search-input::placeholder {
-  color: rgba(255 255 255 / 0.6);
-}
-
-.search-input:focus {
-  outline: 2px solid var(--color-olive-green);
-}
-
-.search-button {
-  padding: 12px 24px;
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--color-bg);
-  background-color: var(--color-olive-green);
-  border: 2px solid var(--color-olive-green);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-button:hover,
-.search-button:focus {
-  background-color: #41502b;
-  border-color: #41502b;
-  outline: none;
-}
-
 .search-section > main {
   display: flex;
   flex-direction: column;
@@ -89,53 +42,6 @@
   overflow-y: auto;
   min-height: 200px;
   padding-right: 5px;
-}
-
-.result-card {
-  border: 2px solid var(--color-olive-green);
-  border-radius: 8px;
-  padding: 18px 22px;
-  background-color: var(--color-dark-purple);
-  box-shadow: 0 4px 6px rgba(228, 251, 200, 0.3);
-  transition:
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
-}
-
-.result-card:hover {
-  box-shadow: 0 0 18px 4px var(--color-olive-green);
-}
-
-.result-card h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--color-olive-green);
-}
-
-.result-card p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-olive-green);
-}
-
-.error-button {
-  align-self: flex-end;
-  padding: 10px 20px;
-  background-color: transparent;
-  border: 2px solid var(--color-olive-green);
-  color: var(--color-olive-green);
-  font-weight: 700;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.error-button:hover,
-.error-button:focus {
-  background-color: var(--color-olive-green);
-  color: var(--color-bg);
-  outline: none;
 }
 
 @media (max-width: 640px) {
@@ -174,73 +80,6 @@
   max-width: 90vw;
   min-width: 320px;
   margin: 0 auto;
-}
-
-.search-bar {
-  width: 100%;
-  min-width: 300px;
-  max-width: 90vw;
-}
-
-.result-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  border: 2px solid var(--color-olive-green);
-  border-radius: 8px;
-  padding: 18px 22px;
-  background-color: var(--color-dark-purple);
-  box-shadow: 0 4px 6px rgba(82, 103, 56, 0.3);
-  transition:
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
-}
-
-.result-card:hover {
-  box-shadow: 0 0 18px 4px var(--color-olive-green);
-}
-
-.result-card img {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.result-card h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--color-olive-green);
-}
-
-.result-card p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-olive-green);
-}
-
-@media (max-width: 640px) {
-  .result-card {
-    flex-wrap: wrap;
-    padding: 12px 16px;
-  }
-
-  .result-card img {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 8px;
-  }
-
-  .result-card h3 {
-    font-size: 1.1rem;
-  }
-
-  .result-card p {
-    font-size: 0.9rem;
-  }
 }
 
 .error-message {
@@ -328,43 +167,4 @@ nav a.active-link {
   color: var(--color-bg);
   box-shadow: 0 0 12px var(--color-olive-green);
   pointer-events: none;
-}
-
-.flyout {
-  width: 100%;
-  height: 60px;
-  background-color: var(--color-dark-purple);
-  border-top: 2px solid var(--color-olive-green);
-  color: var(--color-olive-green);
-  padding: 12px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 -2px 10px rgba(82, 103, 56, 0.5);
-  font-weight: 700;
-  font-size: 1rem;
-  user-select: none;
-  position: sticky;
-  bottom: 0;
-  border-radius: 0 0 12px 12px;
-  box-sizing: border-box;
-}
-
-.flyout button {
-  background-color: var(--color-olive-green);
-  color: var(--color-bg);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: background-color 0.3s ease;
-  margin-left: 12px;
-  min-width: 110px;
-}
-
-.flyout button:hover,
-.flyout button:focus {
-  background-color: #41502b;
-  outline: none;
 }

@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, vi, afterEach, expect } from 'vitest';
 
-import { useTheme } from '../context/useTheme';
+import { useTheme } from '../../context/useTheme';
 
 import { ThemeToggle } from './ThemeToggle';
 
-vi.mock('../context/useTheme');
+vi.mock('../../context/useTheme');
 
 describe('ThemeToggle', () => {
   const toggleThemeMock = vi.fn();
