@@ -5,11 +5,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Loader } from '../components/Loader';
 import { Pagination } from '../components/Pagination';
 import { ResultsList } from '../components/ResultsList';
-import { SearchBar } from '../components/SearchBar';
 import { useCharacters } from '../hooks/useCharacters';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 import { Flyout } from './Flyout/Flyout';
+import { SearchBar } from './SearchBar/SearchBar';
 
 type Props = {
   currentPage?: string;

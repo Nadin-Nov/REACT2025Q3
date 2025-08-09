@@ -15,6 +15,10 @@ export const Flyout: FC = () => {
 
   if (selectedItems.length === 0) return null;
 
+  const handleUnselectAllClick = () => {
+    dispatch(unselectAll());
+  };
+
   const handleDownloadClick = () => {};
 
   return (
@@ -32,7 +36,7 @@ export const Flyout: FC = () => {
         <button
           type="button"
           className={clsx(styles.button, styles.unselectButton)}
-          onClick={() => dispatch(unselectAll())}
+          onClick={handleUnselectAllClick}
         >
           Unselect all
         </button>
