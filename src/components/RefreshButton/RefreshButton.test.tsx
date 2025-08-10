@@ -42,7 +42,7 @@ describe('RefreshButton', () => {
     await user.click(button);
 
     expect(mockDispatch).toHaveBeenCalledWith(
-      itemsApi.util.invalidateTags(['Characters'])
+      itemsApi.util.invalidateTags(['Characters', 'Character'])
     );
   });
 });

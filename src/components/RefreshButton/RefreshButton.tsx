@@ -8,7 +8,7 @@ export function RefreshButton() {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(itemsApi.util.invalidateTags(['Characters']));
+    dispatch(itemsApi.util.invalidateTags(['Characters', 'Character']));
   };
 
   return (
