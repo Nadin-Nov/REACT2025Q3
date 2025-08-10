@@ -15,18 +15,31 @@ type Props = {
   currentPage?: string;
 };
 
+function errorToString(error: unknown): string {
+  if (!error) return '';
+  if (typeof error === 'string') return error;
+  try {
+    return JSON.stringify(error);
+  } catch {
+    return 'Unknown error';
+  }
+}
+
 export const SearchSection = ({ currentPage }: Props) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const query = searchParams.get('query') ?? '';
+  const queryFromUrl = searchParams.get('query') ?? '';
   const page = parseInt(currentPage ?? '1', 10);
 
-  const [, setSearchTermLS] = useLocalStorage('searchTerm', query);
+  const [searchTerm, setSearchTerm] = useState(queryFromUrl);
 
-  const [searchTerm, setSearchTerm] = useState(query);
+  const [, setSearchTermLS] = useLocalStorage('searchTerm', queryFromUrl);
 
-  const { characters, loading, error, totalPages } = useCharacters(query, page);
+  const { characters, loading, error, totalPages } = useCharacters(
+    searchTerm,
+    page
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -43,13 +56,13 @@ export const SearchSection = ({ currentPage }: Props) => {
   const goToPage = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     void navigate(
-      `/${newPage}${query ? `?query=${encodeURIComponent(query)}` : ''}`
+      `/${newPage}${searchTerm ? `?query=${encodeURIComponent(searchTerm)}` : ''}`
     );
   };
 
   useEffect(() => {
-    setSearchTerm(query);
-  }, [query]);
+    setSearchTerm(queryFromUrl);
+  }, [queryFromUrl]);
 
   return (
     <div className="search-section">
@@ -62,7 +75,7 @@ export const SearchSection = ({ currentPage }: Props) => {
         {loading ? (
           <Loader />
         ) : error ? (
-          <p style={{ color: 'white' }}>Error: {error}</p>
+          <p style={{ color: 'white' }}>Error: {errorToString(error)}</p>
         ) : (
           <>
             <ResultsList characters={characters} currentPage={page} />

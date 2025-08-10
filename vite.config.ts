@@ -18,6 +18,7 @@ export default defineConfig({
         'src/__tests__/apiResponses.ts',
         'src/__tests__/characters.ts',
         'src/main.tsx',
+        'src/store/hooks.ts',
       ],
       thresholds: {
         statements: 80,

@@ -1,0 +1,18 @@
+.refreshButton {
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-bg);
+  background-color: var(--color-olive-green);
+  border: 2px solid var(--color-olive-green);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.refreshButton:hover,
+.refreshButton:focus {
+  background-color: #41502b;
+  border-color: #41502b;
+  outline: none;
+}
