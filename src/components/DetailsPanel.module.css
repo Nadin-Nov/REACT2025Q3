@@ -1,0 +1,41 @@
+.closeButton {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-olive-green);
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.closeButton:hover,
+.closeButton:focus {
+  background-color: #41502b;
+  color: var(--color-bg);
+  outline: none;
+}
+
+.refreshButton {
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-bg);
+  background-color: var(--color-olive-green);
+  border: 2px solid var(--color-olive-green);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.refreshButton:hover,
+.refreshButton:focus {
+  background-color: #41502b;
+  border-color: #41502b;
+  outline: none;
+}

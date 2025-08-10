@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useGetCharacterByIdQuery } from '../api/itemsApi';
 
+import styles from './DetailsPanel.module.css';
 import { Loader } from './Loader';
 
 function getErrorMessage(error: unknown): string {
@@ -53,6 +54,7 @@ export const DetailsPanel = () => {
     data: character,
     isLoading,
     error,
+    refetch,
   } = useGetCharacterByIdQuery(isNaN(id) ? skipToken : id);
 
   const handleClose = () => {
@@ -69,6 +71,10 @@ export const DetailsPanel = () => {
     });
   };
 
+  const handleRefresh = () => {
+    void refetch();
+  };
+
   if (isLoading) return <Loader />;
 
   if (error)
@@ -77,10 +83,19 @@ export const DetailsPanel = () => {
   if (!character) return <p>Character not found.</p>;
 
   return (
-    <div className="details-panel">
-      <button onClick={handleClose} className="close-button">
+    <div className={styles.detailsPanel}>
+      <button onClick={handleClose} className={styles.closeButton}>
         ✖
       </button>
+
+      <button
+        onClick={handleRefresh}
+        type="button"
+        className={styles.refreshButton}
+      >
+        Refresh Details
+      </button>
+
       <h2>{character.name}</h2>
       <img src={character.image} alt={character.name} />
       <p>
