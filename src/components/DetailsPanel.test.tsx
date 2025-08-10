@@ -1,122 +1,109 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { vi, describe, it, expect, afterEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 
+import { mockValidCharacters } from '../__tests__/characters';
 import * as api from '../api/itemsApi';
+import type { Character } from '../types';
 
 import { DetailsPanel } from './DetailsPanel';
 
-const mockNavigate = vi.fn();
-
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
-
 describe('DetailsPanel', () => {
-  const mockCharacter = {
-    id: 1,
-    name: 'Rick Sanchez',
-    description: 'Human - Alive - from Earth',
-    image: 'rick.png',
-  };
-
   afterEach(() => {
     vi.restoreAllMocks();
-    vi.unstubAllGlobals();
-    mockNavigate.mockClear();
   });
 
-  it('should show loader while fetching character', () => {
-    vi.spyOn(api, 'fetchCharacterById').mockReturnValue(new Promise(() => {}));
+  it('should renders character details correctly', () => {
+    const mockCharacter: Character = mockValidCharacters[0];
+
+    vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
+      data: mockCharacter,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    } as ReturnType<typeof api.useGetCharacterByIdQuery>);
 
     render(
-      <MemoryRouter initialEntries={['/1/1']}>
-        <Routes>
-          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
-        </Routes>
+      <MemoryRouter>
+        <DetailsPanel />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText(mockCharacter.name)).toBeInTheDocument();
+    expect(screen.getByRole('img')).toHaveAttribute('src', mockCharacter.image);
+
+    const statusParagraph = screen.getByText('Status:', {
+      selector: 'strong',
+    }).parentElement;
+    expect(statusParagraph).toHaveTextContent(
+      `Status: ${mockCharacter.description.split(' - ')[1]}`
+    );
+
+    const speciesParagraph = screen.getByText('Species:', {
+      selector: 'strong',
+    }).parentElement;
+    expect(speciesParagraph).toHaveTextContent(
+      `Species: ${mockCharacter.description.split(' - ')[0]}`
+    );
+
+    const originParagraph = screen.getByText('Origin:', {
+      selector: 'strong',
+    }).parentElement;
+    expect(originParagraph).toHaveTextContent(
+      `Origin: ${mockCharacter.description.split(' - ')[2].replace('from ', '')}`
+    );
+  });
+
+  it('should show loader when loading', () => {
+    vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      error: undefined,
+      refetch: vi.fn(),
+    } as ReturnType<typeof api.useGetCharacterByIdQuery>);
+
+    render(
+      <MemoryRouter>
+        <DetailsPanel />
       </MemoryRouter>
     );
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  it('should display character data after fetch', async () => {
-    vi.spyOn(api, 'fetchCharacterById').mockResolvedValue(mockCharacter);
+  it('should show error message on error', () => {
+    const errorObj = { status: 'FETCH_ERROR' };
+
+    vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: errorObj,
+      refetch: vi.fn(),
+    } as ReturnType<typeof api.useGetCharacterByIdQuery>);
 
     render(
-      <MemoryRouter initialEntries={['/1/1']}>
-        <Routes>
-          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
-        </Routes>
+      <MemoryRouter>
+        <DetailsPanel />
       </MemoryRouter>
     );
 
-    expect(await screen.findByRole('heading', { level: 2 })).toHaveTextContent(
-      mockCharacter.name
-    );
-
-    expect(screen.getByAltText(mockCharacter.name)).toHaveAttribute(
-      'src',
-      mockCharacter.image
-    );
-
-    expect(screen.getByText(/status/i)).toBeInTheDocument();
+    expect(screen.getByText(/Network error/i)).toBeInTheDocument();
   });
 
-  it('should display error if fetchCharacterById throws', async () => {
-    vi.spyOn(api, 'fetchCharacterById').mockRejectedValue(
-      new Error('Fetch error')
-    );
+  it('should shows "Character not found." if no data and no error', () => {
+    vi.spyOn(api, 'useGetCharacterByIdQuery').mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: undefined,
+      refetch: vi.fn(),
+    } as ReturnType<typeof api.useGetCharacterByIdQuery>);
 
     render(
-      <MemoryRouter initialEntries={['/1/1']}>
-        <Routes>
-          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
-        </Routes>
+      <MemoryRouter>
+        <DetailsPanel />
       </MemoryRouter>
     );
 
-    expect(await screen.findByText(/error/i)).toHaveTextContent('Fetch error');
-  });
-
-  it('should display error on invalid detailsId', async () => {
-    render(
-      <MemoryRouter initialEntries={['/1/abc']}>
-        <Routes>
-          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    expect(
-      await screen.findByText(/invalid character id/i)
-    ).toBeInTheDocument();
-  });
-
-  it('should navigate to list view on close button click', async () => {
-    const user = userEvent.setup();
-    vi.spyOn(api, 'fetchCharacterById').mockResolvedValue(mockCharacter);
-
-    render(
-      <MemoryRouter initialEntries={['/1/1?query=rick']}>
-        <Routes>
-          <Route path="/:page/:detailsId" element={<DetailsPanel />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    await screen.findByRole('heading', { level: 2 });
-
-    await user.click(screen.getByRole('button', { name: /✖/ }));
-
-    expect(mockNavigate).toHaveBeenCalledWith({
-      pathname: '/1',
-      search: 'query=rick',
-    });
+    expect(screen.getByText(/Character not found/i)).toBeInTheDocument();
   });
 });

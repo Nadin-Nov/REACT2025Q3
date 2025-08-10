@@ -1,10 +1,43 @@
-import { useEffect, useState } from 'react';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { fetchCharacterById } from '../api/itemsApi';
-import type { Character } from '../types';
+import { useGetCharacterByIdQuery } from '../api/itemsApi';
 
 import { Loader } from './Loader';
+
+function getErrorMessage(error: unknown): string {
+  if (error === null || error === undefined) return 'Failed to load character';
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  if (typeof error === 'object') {
+    if ('status' in error) {
+      const e = error as { status?: number | string };
+      if (typeof e.status === 'number') return `Error ${e.status}`;
+      if (e.status === 'FETCH_ERROR') return 'Network error';
+      if (e.status === 'PARSING_ERROR') return 'Response parsing error';
+      return 'Unknown error';
+    }
+    if ('message' in error) {
+      const e = error as { message?: unknown };
+      if (typeof e.message === 'string') return e.message;
+    }
+
+    try {
+      return JSON.stringify(error, null, 2);
+    } catch {
+      return 'Unknown error object';
+    }
+  }
+
+  if (typeof error === 'number' || typeof error === 'boolean') {
+    return error.toString();
+  }
+
+  return 'Unknown error type';
+}
 
 export const DetailsPanel = () => {
   const { detailsId, page: routePage } = useParams<{
@@ -14,35 +47,13 @@ export const DetailsPanel = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [character, setCharacter] = useState<Character | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const id = detailsId ? Number(detailsId) : NaN;
 
-  useEffect(() => {
-    if (!detailsId) return;
-
-    const id = Number(detailsId);
-    if (isNaN(id)) {
-      setError('Invalid character ID');
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    fetchCharacterById(id)
-      .then((char) => {
-        setCharacter(char);
-      })
-      .catch((err) => {
-        setError(err instanceof Error ? err.message : String(err));
-        setCharacter(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [detailsId]);
+  const {
+    data: character,
+    isLoading,
+    error,
+  } = useGetCharacterByIdQuery(isNaN(id) ? skipToken : id);
 
   const handleClose = () => {
     const currentPageFromParams = searchParams.get('page');
@@ -58,9 +69,10 @@ export const DetailsPanel = () => {
     });
   };
 
-  if (loading) return <Loader />;
+  if (isLoading) return <Loader />;
 
-  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
+  if (error)
+    return <p style={{ color: 'red' }}>Error: {getErrorMessage(error)}</p>;
 
   if (!character) return <p>Character not found.</p>;
 

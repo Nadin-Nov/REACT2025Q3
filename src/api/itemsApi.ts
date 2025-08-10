@@ -1,82 +1,85 @@
-import type {
-  Character,
-  FetchCharactersResult,
-  RickAndMortyApiResponse,
-  RickAndMortyApiCharacter,
-} from '../types/index';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+import type { Character, FetchCharactersResult } from '../types';
 import {
   isValidRickAndMortyApiResponse,
   isValidRickAndMortyApiCharacter,
 } from '../utils/validation';
 
-export async function fetchCharacters(
-  searchTerm: string,
-  page = 1
-): Promise<FetchCharactersResult> {
-  const params = new URLSearchParams();
-  params.append('page', page.toString());
-  if (searchTerm.trim()) {
-    params.append('name', searchTerm.trim());
-  }
+export const itemsApi = createApi({
+  reducerPath: 'itemsApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://rickandmortyapi.com/api/',
+  }),
+  tagTypes: ['Characters', 'Character'],
+  endpoints: (builder) => ({
+    getCharacters: builder.query<
+      FetchCharactersResult,
+      { searchTerm: string; page?: number }
+    >({
+      query: ({ searchTerm, page = 1 }) => {
+        const params = new URLSearchParams();
+        params.append('page', page.toString());
+        if (searchTerm.trim()) {
+          params.append('name', searchTerm.trim());
+        }
+        return `character?${params.toString()}`;
+      },
+      transformResponse: (
+        rawData: unknown,
+        _meta,
+        arg
+      ): FetchCharactersResult => {
+        if (!isValidRickAndMortyApiResponse(rawData)) {
+          throw new Error('Invalid API response structure');
+        }
 
-  const response = await fetch(
-    `https://rickandmortyapi.com/api/character?${params.toString()}`
-  );
+        const data = rawData;
 
-  if (!response.ok) {
-    if (response.status === 404) {
-      return {
-        characters: [],
-        totalPages: 0,
-        currentPage: page,
-      };
-    }
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
-  }
+        const characters: Character[] = data.results.map((char) => ({
+          id: char.id,
+          name: char.name,
+          description: `${char.species} - ${char.status} - from ${char.origin.name}`,
+          image: char.image,
+        }));
 
-  const rawData: unknown = await response.json();
+        return {
+          characters,
+          totalPages: data.info.pages,
+          currentPage: arg.page ?? 1,
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.characters.map(({ id }) => ({
+                type: 'Character' as const,
+                id,
+              })),
+              { type: 'Characters', id: 'LIST' },
+            ]
+          : [{ type: 'Characters', id: 'LIST' }],
+    }),
 
-  if (!isValidRickAndMortyApiResponse(rawData)) {
-    throw new Error('Invalid API response structure');
-  }
+    getCharacterById: builder.query<Character, number>({
+      query: (id) => `character/${id}`,
+      transformResponse: (rawData: unknown): Character => {
+        if (!isValidRickAndMortyApiCharacter(rawData)) {
+          throw new Error('Invalid API response structure');
+        }
 
-  const data: RickAndMortyApiResponse = rawData;
+        const char = rawData;
 
-  const characters: Character[] = data.results.map((char) => ({
-    id: char.id,
-    name: char.name,
-    description: `${char.species} - ${char.status} - from ${char.origin.name}`,
-    image: char.image,
-  }));
+        return {
+          id: char.id,
+          name: char.name,
+          description: `${char.species} - ${char.status} - from ${char.origin.name}`,
+          image: char.image,
+        };
+      },
+      providesTags: (_result, _error, id) => [{ type: 'Character', id }],
+    }),
+  }),
+});
 
-  return {
-    characters,
-    totalPages: data.info.pages,
-    currentPage: page,
-  };
-}
-
-export async function fetchCharacterById(id: number): Promise<Character> {
-  const response = await fetch(
-    `https://rickandmortyapi.com/api/character/${id}`
-  );
-
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status} ${response.statusText}`);
-  }
-
-  const rawData: unknown = await response.json();
-
-  if (!isValidRickAndMortyApiCharacter(rawData)) {
-    throw new Error('Invalid API response structure');
-  }
-
-  const char: RickAndMortyApiCharacter = rawData;
-
-  return {
-    id: char.id,
-    name: char.name,
-    description: `${char.species} - ${char.status} - from ${char.origin.name}`,
-    image: char.image,
-  };
-}
+export const { useGetCharactersQuery, useGetCharacterByIdQuery } = itemsApi;
