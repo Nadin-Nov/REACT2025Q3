@@ -7,8 +7,15 @@ import { Header } from './Header';
 vi.mock('./NavMenu', () => ({
   NavMenu: () => <nav aria-label="main navigation">Mocked NavMenu</nav>,
 }));
+
 vi.mock('./ThemeToggle/ThemeToggle', () => ({
   ThemeToggle: () => <button aria-label="toggle theme">Toggle Theme</button>,
+}));
+
+vi.mock('./RefreshButton/RefreshButton', () => ({
+  RefreshButton: () => (
+    <button aria-label="refresh button">Mocked Refresh</button>
+  ),
 }));
 
 describe('Header', () => {
