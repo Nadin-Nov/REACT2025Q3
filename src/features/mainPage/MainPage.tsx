@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { HookForm } from '../../entities/form/ControlledForm';
-import { UncontrolledForm } from '../../entities/form/UncontrolledForm';
+import { Button } from '../../shared/ui/Button/Button';
 import { Modal } from '../../shared/ui/Modal/Modal';
 
 import styles from './mainPage.module.css';
@@ -11,17 +10,17 @@ export const MainPage = () => {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => setModal('hook')}>Open Hook Form</button>
-      <button onClick={() => setModal('uncontrolled')}>
-        Open Uncontrolled Form
-      </button>
+      <Button onClick={() => setModal('hook')}>Open Hook Modal</Button>
+      <Button onClick={() => setModal('uncontrolled')}>
+        Open Uncontrolled Modal
+      </Button>
 
       <Modal open={modal === 'hook'} onClose={() => setModal(null)}>
-        <HookForm onSuccess={() => setModal(null)} />
+        <div>Hook Modal Content</div>
       </Modal>
 
       <Modal open={modal === 'uncontrolled'} onClose={() => setModal(null)}>
-        <UncontrolledForm onSuccess={() => setModal(null)} />
+        <div>Uncontrolled Modal Content</div>
       </Modal>
     </div>
   );
