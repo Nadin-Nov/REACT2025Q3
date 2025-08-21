@@ -5,8 +5,10 @@
   border-radius: 4px;
   padding: 0.5rem 1rem;
   background-color: var(--color-primary);
-  color: white;
+  color: #333;
   transition: background-color 0.2s;
+  min-width: 200px;
+  text-align: center;
 }
 
 .button:hover {
