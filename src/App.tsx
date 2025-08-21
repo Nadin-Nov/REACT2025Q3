@@ -1,5 +1,10 @@
 import { MainPage } from './features/mainPage/MainPage';
+import { Layout } from './widgets/layout/Layout';
 
 export default function App() {
-  return <MainPage />;
+  return (
+    <Layout>
+      <MainPage />
+    </Layout>
+  );
 }
