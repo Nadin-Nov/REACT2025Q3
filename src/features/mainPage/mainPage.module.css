@@ -1,7 +1,41 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
   padding: 20px;
   align-items: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tilesContainer {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.tile {
+  background: var(--color-secondary);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition:
+    border 0.3s,
+    background 0.3s;
+}
+
+.newTile {
+  border: 2px solid var(--color-accent);
+  background: #e8f7ff;
 }

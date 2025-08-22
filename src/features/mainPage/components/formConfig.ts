@@ -52,6 +52,7 @@ export const formFields: FieldConfig[] = [
     type: 'select',
     options: ['USA', 'Canada', 'UK', 'Germany'],
   },
+  { name: 'picture', label: 'Upload Picture', type: 'file' },
 ];
 
 export const formSchema = z

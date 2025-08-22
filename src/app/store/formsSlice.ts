@@ -1,11 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-type FormData = Record<string, unknown>;
+import type { UncontrolledFormData } from '../../features/mainPage/types';
 
 type FormsState = {
-  uncontrolled: FormData[];
-  hook: FormData[];
+  uncontrolled: UncontrolledFormData[];
+  hook: UncontrolledFormData[];
 };
 
 const initialState: FormsState = {
@@ -17,10 +17,13 @@ export const formsSlice = createSlice({
   name: 'forms',
   initialState,
   reducers: {
-    addUncontrolledFormData: (state, action: PayloadAction<FormData>) => {
+    addUncontrolledFormData: (
+      state,
+      action: PayloadAction<UncontrolledFormData>
+    ) => {
       state.uncontrolled.push(action.payload);
     },
-    addHookFormData: (state, action: PayloadAction<FormData>) => {
+    addHookFormData: (state, action: PayloadAction<UncontrolledFormData>) => {
       state.hook.push(action.payload);
     },
   },
