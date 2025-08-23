@@ -35,6 +35,12 @@
     background 0.3s;
 }
 
+.tile img {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
 .newTile {
   border: 2px solid var(--color-accent);
   background: #e8f7ff;

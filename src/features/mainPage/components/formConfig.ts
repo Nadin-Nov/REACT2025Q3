@@ -50,7 +50,6 @@ export const formFields: FieldConfig[] = [
     name: 'country',
     label: 'Country',
     type: 'select',
-    options: ['USA', 'Canada', 'UK', 'Germany'],
   },
   { name: 'picture', label: 'Upload Picture', type: 'file' },
 ];

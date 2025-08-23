@@ -28,12 +28,23 @@ export const MainPage = () => {
         onOpenUncontrolled={() => setModal('uncontrolled')}
       />
 
-      <Modal open={modal === 'hook'} onClose={() => setModal(null)}>
+      <Modal
+        open={modal === 'hook'}
+        onClose={() => setModal(null)}
+        ariaLabel="Hook form example"
+      >
         <div>Hook Form Modal</div>
       </Modal>
 
-      <Modal open={modal === 'uncontrolled'} onClose={() => setModal(null)}>
-        <UncontrolledForm onSubmit={handleUncontrolledSubmit} />
+      <Modal
+        open={modal === 'uncontrolled'}
+        onClose={() => setModal(null)}
+        labelledById="uncontrolled-form-title"
+      >
+        <div>
+          <h2 id="uncontrolled-form-title">Uncontrolled Form</h2>
+          <UncontrolledForm onSubmit={handleUncontrolledSubmit} />
+        </div>
       </Modal>
 
       <FormTiles data={uncontrolledData} />

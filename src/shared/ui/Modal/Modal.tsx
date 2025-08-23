@@ -8,9 +8,17 @@ type ModalProps = {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
+  ariaLabel?: string;
+  labelledById?: string;
 };
 
-export const Modal: FC<ModalProps> = ({ open, onClose, children }) => {
+export const Modal: FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+  ariaLabel,
+  labelledById,
+}) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
@@ -94,7 +102,13 @@ export const Modal: FC<ModalProps> = ({ open, onClose, children }) => {
   };
 
   return createPortal(
-    <dialog ref={dialogRef} aria-modal="true">
+    <dialog
+      ref={dialogRef}
+      aria-modal="true"
+      {...(labelledById
+        ? { 'aria-labelledby': labelledById }
+        : { 'aria-label': ariaLabel || 'Modal window' })}
+    >
       <div
         className={styles.overlay}
         role="presentation"
