@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 
 import type { RootState } from '../../app/store';
 import { Modal } from '../../shared/ui/Modal/Modal';
-import { ModalButtons } from '../mainPage/components/ModalButton/ModalButton';
 
+import { ControlledForm } from './components/ControlledForm';
 import { FormTiles } from './components/FormTiles/FormTiles';
+import { ModalButtons } from './components/ModalButton/ModalButton';
 import { UncontrolledForm } from './components/UncontrolledForm';
 import styles from './mainPage.module.css';
-import type { UncontrolledFormData } from './types';
+import type { UncontrolledFormData, ControlledFormData } from './types';
 
 export const MainPage = () => {
   const [modal, setModal] = useState<'hook' | 'uncontrolled' | null>(null);
@@ -17,7 +18,12 @@ export const MainPage = () => {
   );
 
   const handleUncontrolledSubmit = (data: UncontrolledFormData) => {
-    console.log('Form submitted:', data);
+    console.log('Uncontrolled form submitted:', data);
+    setModal(null);
+  };
+
+  const handleControlledSubmit = (data: ControlledFormData) => {
+    console.log('Controlled form submitted:', data);
     setModal(null);
   };
 
@@ -33,7 +39,10 @@ export const MainPage = () => {
         onClose={() => setModal(null)}
         ariaLabel="Hook form example"
       >
-        <div>Hook Form Modal</div>
+        <div>
+          <h2>Controlled Form</h2>
+          <ControlledForm onSubmit={handleControlledSubmit} />
+        </div>
       </Modal>
 
       <Modal

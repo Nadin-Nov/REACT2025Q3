@@ -13,7 +13,7 @@ import { validatePassword } from '../../../shared/utils/passwordValidation';
 import type { UncontrolledFormProps, UncontrolledFormData } from '../types';
 
 import { FormFieldRenderer } from './FormFieldRenderer';
-import styles from './UncontrolledForm.module.css';
+import styles from './form.module.css';
 import { formFields, formSchema } from './formConfig';
 
 export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
@@ -33,34 +33,42 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
       return;
     }
 
-    if (parsedData) {
-      const data: UncontrolledFormData = { ...parsedData };
+    if (!parsedData) return;
 
-      const passwordErrors = validatePassword(
-        data.password,
-        data.confirmPassword
-      );
+    const passwordErrors = validatePassword(
+      parsedData.password,
+      parsedData.confirmPassword
+    );
+    if (passwordErrors.length > 0) {
+      setErrors({ password: passwordErrors });
+      return;
+    }
 
-      if (passwordErrors.length > 0) {
-        setErrors({ password: passwordErrors });
+    let pictureBase64: string | undefined = undefined;
+    const fileInput = form.elements.namedItem(
+      'picture'
+    ) as HTMLInputElement | null;
+
+    if (fileInput?.files?.[0]) {
+      const file = fileInput.files[0];
+      const fileErrors = validateFile(file);
+      if (fileErrors) {
+        setErrors({ picture: fileErrors });
         return;
       }
-
-      const fileInput = form.elements.namedItem('picture') as HTMLInputElement;
-      if (fileInput?.files?.[0]) {
-        const file = fileInput.files[0];
-        const fileErrors = validateFile(file);
-        if (fileErrors) {
-          setErrors({ picture: fileErrors });
-          return;
-        }
-        data.picture = await fileToBase64(file);
-      }
-
-      setErrors({});
-      dispatch(addUncontrolledFormData(data));
-      onSubmit?.(data);
+      pictureBase64 = await fileToBase64(file);
+    } else if (typeof parsedData.picture === 'string') {
+      pictureBase64 = parsedData.picture;
     }
+
+    const data: UncontrolledFormData = {
+      ...parsedData,
+      picture: pictureBase64,
+    };
+
+    setErrors({});
+    dispatch(addUncontrolledFormData(data));
+    onSubmit?.(data);
   };
 
   return (

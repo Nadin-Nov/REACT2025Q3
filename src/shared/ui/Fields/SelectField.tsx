@@ -1,12 +1,14 @@
-import type { FC } from 'react';
+import type { FC, ChangeEvent } from 'react';
 
-import styles from '../../../features/mainPage/components/UncontrolledForm.module.css';
+import styles from '../../../features/mainPage/components/form.module.css';
 
 type SelectFieldProps = {
   id: string;
   name: string;
   label: string;
   options: string[];
+  value?: string;
+  onChange?: (value: string) => void;
   errors?: string[];
 };
 
@@ -15,11 +17,23 @@ export const SelectField: FC<SelectFieldProps> = ({
   name,
   label,
   options,
+  value,
+  onChange,
   errors,
 }) => (
   <div className={styles.formGroup}>
     <label htmlFor={id}>{label}:</label>
-    <select id={id} name={name}>
+    <select
+      id={id}
+      name={name}
+      value={value ?? ''}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        onChange?.(e.target.value)
+      }
+    >
+      <option value="" disabled>
+        Select {label.toLowerCase()}
+      </option>
       {options.map((opt) => (
         <option key={opt} value={opt}>
           {opt}

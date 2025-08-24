@@ -5,7 +5,7 @@ import { InputField } from '../../../shared/ui/Fields/InputField';
 import { RadioField } from '../../../shared/ui/Fields/RadioField';
 import { SelectField } from '../../../shared/ui/Fields/SelectField';
 
-import styles from './UncontrolledForm.module.css';
+import styles from './form.module.css';
 import type { FieldConfig } from './formConfig';
 
 type Props = {

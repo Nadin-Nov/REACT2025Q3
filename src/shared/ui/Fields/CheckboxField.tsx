@@ -1,11 +1,13 @@
 import type { FC } from 'react';
 
-import styles from '../../../features/mainPage/components/UncontrolledForm.module.css';
+import styles from '../../../features/mainPage/components/form.module.css';
 
 type CheckboxFieldProps = {
   id: string;
   name: string;
   label: string;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
   errors?: string[];
 };
 
@@ -13,11 +15,19 @@ export const CheckboxField: FC<CheckboxFieldProps> = ({
   id,
   name,
   label,
+  checked = false,
+  onChange,
   errors,
 }) => (
   <div className={styles.formGroup}>
     <label htmlFor={id} className={styles.checkboxLabel}>
-      <input id={id} type="checkbox" name={name} />
+      <input
+        id={id}
+        type="checkbox"
+        name={name}
+        checked={checked}
+        onChange={(e) => onChange?.(e.target.checked)}
+      />
       {label}
     </label>
     {errors?.map((err, i) => (

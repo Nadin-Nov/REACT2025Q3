@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
 
-import styles from '../../../features/mainPage/components/UncontrolledForm.module.css';
+import styles from '../../../features/mainPage/components/form.module.css';
 
 type InputFieldProps = {
   id: string;
@@ -9,6 +9,7 @@ type InputFieldProps = {
   label: string;
   type: string;
   placeholder?: string;
+  value?: string | number;
   errors?: string[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   extra?: React.ReactNode;
@@ -20,6 +21,7 @@ export const InputField: FC<InputFieldProps> = ({
   label,
   type,
   placeholder,
+  value,
   errors,
   onChange,
   extra,
@@ -31,6 +33,7 @@ export const InputField: FC<InputFieldProps> = ({
       name={name}
       type={type}
       placeholder={placeholder}
+      value={value ?? ''}
       className={clsx({ [styles.errorInput]: errors?.length })}
       onChange={onChange}
     />

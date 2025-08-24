@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+import { validateFile } from '../../../shared/utils/fileValidation';
+import { validatePassword } from '../../../shared/utils/passwordValidation';
+
 export type FieldType =
   | 'text'
   | 'email'
@@ -46,11 +49,7 @@ export const formFields: FieldConfig[] = [
     options: ['Male', 'Female'],
   },
   { name: 'acceptTnC', label: 'Accept Terms', type: 'checkbox' },
-  {
-    name: 'country',
-    label: 'Country',
-    type: 'select',
-  },
+  { name: 'country', label: 'Country', type: 'select' },
   { name: 'picture', label: 'Upload Picture', type: 'file' },
 ];
 
@@ -58,14 +57,34 @@ export const formSchema = z
   .object({
     name: z.string().regex(/^[A-Z]/, 'Name must start with a capital letter'),
     email: z.string().email('Invalid email'),
-    age: z.number().nonnegative('Age must be positive'),
+    age: z.coerce.number().nonnegative('Age must be positive'),
     password: z.string().min(8, 'Password must be at least 8 characters'),
     confirmPassword: z.string(),
     gender: z.enum(['Male', 'Female']),
     acceptTnC: z.boolean().refine((val) => val === true, 'You must accept T&C'),
-    country: z.string(),
+    country: z.string().min(1, 'Country is required'),
+
+    picture: z
+      .unknown()
+      .optional()
+      .refine(
+        (file): file is File | undefined => !file || file instanceof File,
+        'File must be a valid File'
+      )
+      .refine(
+        (file) => {
+          if (!file) return true;
+          if (!(file instanceof File)) return false;
+          return validateFile(file)?.length === 0;
+        },
+        { message: 'Invalid file' }
+      ),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
+  .refine(
+    (data) =>
+      validatePassword(data.password, data.confirmPassword).length === 0,
+    {
+      message: 'Passwords do not match or are too weak',
+      path: ['confirmPassword'],
+    }
+  );
