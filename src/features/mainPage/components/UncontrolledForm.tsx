@@ -4,17 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import type { RootState } from '../../../app/store';
 import { addUncontrolledFormData } from '../../../app/store/formsSlice';
-import { CheckboxField } from '../../../shared/ui/Fields/CheckboxField';
-import { InputField } from '../../../shared/ui/Fields/InputField';
-import { RadioField } from '../../../shared/ui/Fields/RadioField';
-import { SelectField } from '../../../shared/ui/Fields/SelectField';
+import { validateFile } from '../../../shared/utils/fileValidation';
 import {
-  calculatePasswordStrength,
-  parseUncontrolledForm,
   fileToBase64,
+  parseUncontrolledForm,
 } from '../../../shared/utils/formHelpers';
+import { validatePassword } from '../../../shared/utils/passwordValidation';
 import type { UncontrolledFormProps, UncontrolledFormData } from '../types';
 
+import { FormFieldRenderer } from './FormFieldRenderer';
 import styles from './UncontrolledForm.module.css';
 import { formFields, formSchema } from './formConfig';
 
@@ -22,11 +20,6 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const countries = useSelector((state: RootState) => state.country.countries);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const [passwordStrength, setPasswordStrength] = useState('');
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordStrength(calculatePasswordStrength(e.target.value));
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,24 +34,30 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
     }
 
     if (parsedData) {
-      setErrors({});
-
       const data: UncontrolledFormData = { ...parsedData };
+
+      const passwordErrors = validatePassword(
+        data.password,
+        data.confirmPassword
+      );
+
+      if (passwordErrors.length > 0) {
+        setErrors({ password: passwordErrors });
+        return;
+      }
 
       const fileInput = form.elements.namedItem('picture') as HTMLInputElement;
       if (fileInput?.files?.[0]) {
         const file = fileInput.files[0];
-        if (!['image/png', 'image/jpeg'].includes(file.type)) {
-          setErrors({ picture: ['Only PNG or JPEG files are allowed'] });
-          return;
-        }
-        if (file.size > 2_000_000) {
-          setErrors({ picture: ['File size must be less than 2MB'] });
+        const fileErrors = validateFile(file);
+        if (fileErrors) {
+          setErrors({ picture: fileErrors });
           return;
         }
         data.picture = await fileToBase64(file);
       }
 
+      setErrors({});
       dispatch(addUncontrolledFormData(data));
       onSubmit?.(data);
     }
@@ -66,84 +65,14 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={(e) => void handleSubmit(e)} className={styles.form}>
-      {formFields.map((field) => {
-        const fieldErrors = errors[field.name] || [];
-        const inputId = `field-${field.name}`;
-
-        switch (field.type) {
-          case 'text':
-          case 'email':
-          case 'number':
-          case 'password':
-            return (
-              <InputField
-                key={field.name}
-                id={inputId}
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                placeholder={field.placeholder}
-                errors={fieldErrors}
-                onChange={
-                  field.name === 'password' ? handlePasswordChange : undefined
-                }
-                extra={
-                  field.name === 'password' && passwordStrength ? (
-                    <div className={styles.passwordStrength}>
-                      Strength: {passwordStrength}
-                    </div>
-                  ) : undefined
-                }
-              />
-            );
-          case 'checkbox':
-            return (
-              <CheckboxField
-                key={field.name}
-                id={inputId}
-                name={field.name}
-                label={field.label}
-                errors={fieldErrors}
-              />
-            );
-          case 'select':
-            return (
-              <SelectField
-                key={field.name}
-                id={inputId}
-                name={field.name}
-                label={field.label}
-                options={
-                  field.name === 'country' ? countries : field.options || []
-                }
-                errors={fieldErrors}
-              />
-            );
-          case 'radio':
-            return (
-              <RadioField
-                key={field.name}
-                name={field.name}
-                label={field.label}
-                options={field.options || []}
-                errors={fieldErrors}
-              />
-            );
-          case 'file':
-            return (
-              <InputField
-                key={field.name}
-                id={inputId}
-                name={field.name}
-                label={field.label}
-                type="file"
-                errors={fieldErrors}
-              />
-            );
-          default:
-            return null;
-        }
-      })}
+      {formFields.map((field) => (
+        <FormFieldRenderer
+          key={field.name}
+          field={field}
+          errors={errors[field.name] || []}
+          countries={countries}
+        />
+      ))}
       <button type="submit" className={styles.submitButton}>
         Submit
       </button>
