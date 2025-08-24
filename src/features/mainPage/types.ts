@@ -1,9 +1,18 @@
 import type { z } from 'zod';
 
-import type { formSchema } from './components/formConfig';
+import type {
+  controlledFormSchema,
+  uncontrolledFormSchema,
+} from './components/formConfig';
 
-export type UncontrolledFormData = z.infer<typeof formSchema> & {
-  picture?: File | string;
+export type UncontrolledFormDataForm = z.infer<
+  typeof uncontrolledFormSchema
+> & {
+  picture?: File;
+};
+
+export type UncontrolledFormData = Omit<UncontrolledFormDataForm, 'picture'> & {
+  picture?: string;
 };
 
 export type UncontrolledFormProps = {
@@ -14,8 +23,12 @@ export type FormTilesProps = {
   data: UncontrolledFormData[];
 };
 
-export type ControlledFormData = z.infer<typeof formSchema> & {
-  picture?: File | string;
+export type ControlledFormDataForm = z.infer<typeof controlledFormSchema> & {
+  picture?: File;
+};
+
+export type ControlledFormData = Omit<ControlledFormDataForm, 'picture'> & {
+  picture?: string;
 };
 
 export type ControlledFormProps = {

@@ -1,7 +1,20 @@
 import type { FC } from 'react';
 
 import styles from '../../mainPage.module.css';
-import type { FormTilesProps } from '../../types';
+
+export type FormTileData = {
+  name: string;
+  email: string;
+  age: number;
+  gender: string;
+  country: string;
+  acceptTnC: boolean;
+  picture?: string;
+};
+
+export type FormTilesProps = {
+  data: FormTileData[];
+};
 
 export const FormTiles: FC<FormTilesProps> = ({ data }) => (
   <div className={styles.tilesContainer}>
@@ -19,7 +32,6 @@ export const FormTiles: FC<FormTilesProps> = ({ data }) => (
           <p>Gender: {item.gender}</p>
           <p>Country: {item.country}</p>
           <p>Accepted T&C: {item.acceptTnC ? 'Yes' : 'No'}</p>
-
           {item.picture && <img src={item.picture} alt={item.name} />}
         </div>
       ))}

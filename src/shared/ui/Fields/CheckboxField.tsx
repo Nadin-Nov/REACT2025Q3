@@ -7,6 +7,8 @@ type CheckboxFieldProps = {
   name: string;
   label: string;
   checked?: boolean;
+  defaultChecked?: boolean;
+  uncontrolled?: boolean;
   onChange?: (checked: boolean) => void;
   errors?: string[];
 };
@@ -16,6 +18,8 @@ export const CheckboxField: FC<CheckboxFieldProps> = ({
   name,
   label,
   checked = false,
+  defaultChecked = false,
+  uncontrolled = false,
   onChange,
   errors,
 }) => (
@@ -25,8 +29,13 @@ export const CheckboxField: FC<CheckboxFieldProps> = ({
         id={id}
         type="checkbox"
         name={name}
-        checked={checked}
-        onChange={(e) => onChange?.(e.target.checked)}
+        {...(uncontrolled
+          ? { defaultChecked }
+          : {
+              checked,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange?.(e.target.checked),
+            })}
       />
       {label}
     </label>

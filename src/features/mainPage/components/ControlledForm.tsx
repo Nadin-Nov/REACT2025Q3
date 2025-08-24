@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FC, ChangeEvent } from 'react';
 import { useState } from 'react';
-import type { SubmitHandler, Resolver } from 'react-hook-form';
+import type { Resolver } from 'react-hook-form';
 import { useForm, Controller } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -16,10 +16,12 @@ import {
   fileToBase64,
   calculatePasswordStrength,
 } from '../../../shared/utils/formHelpers';
-import type { ControlledFormProps, ControlledFormData } from '../types';
+import type { ControlledFormData, ControlledFormProps } from '../types';
 
 import styles from './form.module.css';
-import { formFields, formSchema } from './formConfig';
+import { formFields, controlledFormSchema } from './formConfig';
+
+const isFile = (val: unknown): val is File => val instanceof File;
 
 export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
@@ -29,25 +31,58 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
   const {
     handleSubmit,
     control,
+    setError,
+    clearErrors,
     formState: { errors, isValid },
   } = useForm<ControlledFormData>({
     resolver: zodResolver(
-      formSchema
+      controlledFormSchema
     ) as unknown as Resolver<ControlledFormData>,
     mode: 'onChange',
   });
 
-  const onFormSubmit: SubmitHandler<ControlledFormData> = (data) => {
-    void (async () => {
-      const finalData: ControlledFormData = { ...data };
+  const onFormSubmit = async (data: ControlledFormData) => {
+    const finalData: ControlledFormData = { ...data };
 
-      if (finalData.picture && finalData.picture instanceof File) {
-        finalData.picture = await fileToBase64(finalData.picture);
-      }
+    if (finalData.picture && isFile(finalData.picture)) {
+      finalData.picture = await fileToBase64(finalData.picture);
+    }
 
-      dispatch(addHookFormData(finalData));
-      onSubmit?.(finalData);
-    })();
+    dispatch(addHookFormData(finalData));
+    onSubmit?.(finalData);
+  };
+
+  const handleFileChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    onChange: (val: File | undefined) => void
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      onChange(undefined);
+      return;
+    }
+
+    const validTypes = ['image/png', 'image/jpeg'];
+    if (!validTypes.includes(file.type)) {
+      setError('picture', {
+        type: 'manual',
+        message: 'Only PNG or JPEG allowed',
+      });
+      onChange(undefined);
+      return;
+    }
+
+    if (file.size > 2_000_000) {
+      setError('picture', {
+        type: 'manual',
+        message: 'File size must be < 2MB',
+      });
+      onChange(undefined);
+      return;
+    }
+
+    clearErrors('picture');
+    onChange(file);
   };
 
   return (
@@ -58,11 +93,16 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
         void handleSubmit(onFormSubmit)();
       }}
     >
-      {' '}
       {formFields.map((field) => {
         const fieldId = `controlled-${field.name}`;
-        const fieldErrors = errors[field.name as keyof ControlledFormData];
-        const errorMessages = fieldErrors?.message ? [fieldErrors.message] : [];
+
+        const fieldError = errors[field.name as keyof ControlledFormData] as
+          | { message?: string }
+          | undefined;
+
+        const errorMessages = fieldError?.message
+          ? [String(fieldError.message)]
+          : [];
 
         switch (field.type) {
           case 'text':
@@ -76,17 +116,12 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
-                    name={ctrlField.name}
+                    name={String(ctrlField.name)}
                     label={field.label}
                     placeholder={field.placeholder}
                     type={field.type}
                     value={
-                      ctrlField.value === undefined ||
-                      ctrlField.value === null ||
-                      typeof ctrlField.value === 'boolean' ||
-                      ctrlField.value instanceof File
-                        ? ''
-                        : ctrlField.value.toString()
+                      ctrlField.value != null ? String(ctrlField.value) : ''
                     }
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       ctrlField.onChange(
@@ -110,7 +145,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
-                    name={ctrlField.name}
+                    name={String(ctrlField.name)}
                     label={field.label}
                     placeholder={field.placeholder}
                     type="password"
@@ -140,7 +175,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 control={control}
                 render={({ field: ctrlField }) => (
                   <RadioField
-                    name={ctrlField.name}
+                    name={String(ctrlField.name)}
                     label={field.label}
                     options={field.options || []}
                     value={
@@ -162,7 +197,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <CheckboxField
                     id={fieldId}
-                    name={ctrlField.name}
+                    name={String(ctrlField.name)}
                     label={field.label}
                     checked={!!ctrlField.value}
                     onChange={ctrlField.onChange}
@@ -184,7 +219,11 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                       id={fieldId}
                       label={field.label}
                       options={countries}
-                      value={ctrlField.value ?? ''}
+                      value={
+                        typeof ctrlField.value === 'string'
+                          ? ctrlField.value
+                          : ''
+                      }
                       onChange={ctrlField.onChange}
                       errors={errorMessages}
                     />
@@ -203,12 +242,10 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
-                    name={ctrlField.name}
+                    name={String(ctrlField.name)}
                     label={field.label}
                     type="file"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      ctrlField.onChange(e.target.files?.[0] ?? undefined)
-                    }
+                    onChange={(e) => handleFileChange(e, ctrlField.onChange)}
                     errors={errorMessages}
                   />
                 )}
@@ -219,6 +256,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
             return null;
         }
       })}
+
       <button type="submit" className={styles.submitButton} disabled={!isValid}>
         Submit
       </button>

@@ -8,6 +8,8 @@ type SelectFieldProps = {
   label: string;
   options: string[];
   value?: string;
+  defaultValue?: string;
+  uncontrolled?: boolean;
   onChange?: (value: string) => void;
   errors?: string[];
 };
@@ -18,6 +20,8 @@ export const SelectField: FC<SelectFieldProps> = ({
   label,
   options,
   value,
+  defaultValue = '',
+  uncontrolled = false,
   onChange,
   errors,
 }) => (
@@ -26,10 +30,13 @@ export const SelectField: FC<SelectFieldProps> = ({
     <select
       id={id}
       name={name}
-      value={value ?? ''}
-      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-        onChange?.(e.target.value)
-      }
+      {...(uncontrolled
+        ? { defaultValue }
+        : {
+            value: value ?? '',
+            onChange: (e: ChangeEvent<HTMLSelectElement>) =>
+              onChange?.(e.target.value),
+          })}
     >
       <option value="" disabled>
         Select {label.toLowerCase()}

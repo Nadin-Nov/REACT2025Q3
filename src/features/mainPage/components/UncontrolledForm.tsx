@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import type { RootState } from '../../../app/store';
 import { addUncontrolledFormData } from '../../../app/store/formsSlice';
-import { validateFile } from '../../../shared/utils/fileValidation';
 import {
   fileToBase64,
   parseUncontrolledForm,
@@ -14,7 +13,7 @@ import type { UncontrolledFormProps, UncontrolledFormData } from '../types';
 
 import { FormFieldRenderer } from './FormFieldRenderer';
 import styles from './form.module.css';
-import { formFields, formSchema } from './formConfig';
+import { formFields, uncontrolledFormSchema } from './formConfig';
 
 export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
     const form = e.currentTarget;
 
     const { data: parsedData, errors: parseErrors } =
-      await parseUncontrolledForm(form, formFields, formSchema);
+      await parseUncontrolledForm(form, formFields, uncontrolledFormSchema);
 
     if (parseErrors) {
       setErrors(parseErrors);
@@ -50,13 +49,7 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
     ) as HTMLInputElement | null;
 
     if (fileInput?.files?.[0]) {
-      const file = fileInput.files[0];
-      const fileErrors = validateFile(file);
-      if (fileErrors) {
-        setErrors({ picture: fileErrors });
-        return;
-      }
-      pictureBase64 = await fileToBase64(file);
+      pictureBase64 = await fileToBase64(fileInput.files[0]);
     } else if (typeof parsedData.picture === 'string') {
       pictureBase64 = parsedData.picture;
     }
@@ -79,6 +72,7 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
           field={field}
           errors={errors[field.name] || []}
           countries={countries}
+          uncontrolled={true}
         />
       ))}
       <button type="submit" className={styles.submitButton}>

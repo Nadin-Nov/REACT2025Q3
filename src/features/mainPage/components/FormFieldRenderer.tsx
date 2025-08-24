@@ -12,9 +12,15 @@ type Props = {
   field: FieldConfig;
   errors: string[];
   countries: string[];
+  uncontrolled?: boolean;
 };
 
-export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
+export const FormFieldRenderer: FC<Props> = ({
+  field,
+  errors,
+  countries,
+  uncontrolled = false,
+}) => {
   const inputId = `field-${field.name}`;
 
   switch (field.type) {
@@ -30,6 +36,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
           type={field.type}
           placeholder={field.placeholder}
           errors={errors}
+          uncontrolled={uncontrolled}
         />
       );
 
@@ -40,6 +47,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
           name={field.name}
           label={field.label}
           errors={errors}
+          uncontrolled={uncontrolled}
         />
       );
 
@@ -50,6 +58,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
           label={field.label}
           options={field.options || []}
           errors={errors}
+          uncontrolled={uncontrolled}
         />
       );
 
@@ -63,6 +72,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
               name={field.name}
               list="countries-list"
               placeholder={field.placeholder}
+              {...(uncontrolled ? { defaultValue: '' } : {})}
             />
             <datalist id="countries-list">
               {countries.map((c) => (
@@ -82,6 +92,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
           label={field.label}
           options={field.options || []}
           errors={errors}
+          uncontrolled={uncontrolled}
         />
       );
 
@@ -93,6 +104,7 @@ export const FormFieldRenderer: FC<Props> = ({ field, errors, countries }) => {
           label={field.label}
           type="file"
           errors={errors}
+          uncontrolled={uncontrolled}
         />
       );
 

@@ -7,6 +7,8 @@ type RadioFieldProps = {
   label: string;
   options: string[];
   value?: string;
+  defaultValue?: string;
+  uncontrolled?: boolean;
   onChange?: (value: string) => void;
   errors?: string[];
 };
@@ -16,6 +18,8 @@ export const RadioField: FC<RadioFieldProps> = ({
   label,
   options,
   value,
+  defaultValue,
+  uncontrolled = false,
   onChange,
   errors,
 }) => (
@@ -27,8 +31,9 @@ export const RadioField: FC<RadioFieldProps> = ({
           type="radio"
           name={name}
           value={opt}
-          checked={value === opt}
-          onChange={() => onChange?.(opt)}
+          {...(uncontrolled
+            ? { defaultChecked: opt === defaultValue }
+            : { checked: value === opt, onChange: () => onChange?.(opt) })}
         />
         {opt}
       </label>

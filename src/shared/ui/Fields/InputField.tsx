@@ -13,6 +13,7 @@ type InputFieldProps = {
   errors?: string[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   extra?: React.ReactNode;
+  uncontrolled?: boolean;
 };
 
 export const InputField: FC<InputFieldProps> = ({
@@ -25,6 +26,7 @@ export const InputField: FC<InputFieldProps> = ({
   errors,
   onChange,
   extra,
+  uncontrolled = false,
 }) => (
   <div className={styles.formGroup}>
     <label htmlFor={id}>{label}:</label>
@@ -33,9 +35,10 @@ export const InputField: FC<InputFieldProps> = ({
       name={name}
       type={type}
       placeholder={placeholder}
-      value={value ?? ''}
       className={clsx({ [styles.errorInput]: errors?.length })}
-      onChange={onChange}
+      {...(uncontrolled
+        ? { defaultValue: value ?? '' }
+        : { value: value ?? '', onChange })}
     />
     {extra}
     {errors?.map((err, i) => (

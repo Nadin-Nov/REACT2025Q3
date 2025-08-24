@@ -1,16 +1,19 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { UncontrolledFormData } from '../../features/mainPage/types';
+import type {
+  UncontrolledFormData,
+  ControlledFormData,
+} from '../../features/mainPage/types';
 
 type FormsState = {
   uncontrolled: UncontrolledFormData[];
-  hook: UncontrolledFormData[];
+  hookForm: ControlledFormData[];
 };
 
 const initialState: FormsState = {
   uncontrolled: [],
-  hook: [],
+  hookForm: [],
 };
 
 export const formsSlice = createSlice({
@@ -23,8 +26,8 @@ export const formsSlice = createSlice({
     ) => {
       state.uncontrolled.push(action.payload);
     },
-    addHookFormData: (state, action: PayloadAction<UncontrolledFormData>) => {
-      state.hook.push(action.payload);
+    addHookFormData: (state, action: PayloadAction<ControlledFormData>) => {
+      state.hookForm.push(action.payload);
     },
   },
 });

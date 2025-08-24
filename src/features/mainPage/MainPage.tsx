@@ -13,9 +13,12 @@ import type { UncontrolledFormData, ControlledFormData } from './types';
 
 export const MainPage = () => {
   const [modal, setModal] = useState<'hook' | 'uncontrolled' | null>(null);
+
   const uncontrolledData = useSelector(
     (state: RootState) => state.forms.uncontrolled
   );
+
+  const hookFormData = useSelector((state: RootState) => state.forms.hookForm);
 
   const handleUncontrolledSubmit = (data: UncontrolledFormData) => {
     console.log('Uncontrolled form submitted:', data);
@@ -56,7 +59,7 @@ export const MainPage = () => {
         </div>
       </Modal>
 
-      <FormTiles data={uncontrolledData} />
+      <FormTiles data={[...uncontrolledData, ...hookFormData]} />
     </div>
   );
 };
