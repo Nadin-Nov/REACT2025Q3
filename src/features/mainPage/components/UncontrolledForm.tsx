@@ -8,7 +8,6 @@ import {
   fileToBase64,
   parseUncontrolledForm,
 } from '../../../shared/utils/formHelpers';
-import { validatePassword } from '../../../shared/utils/passwordValidation';
 import type { UncontrolledFormProps, UncontrolledFormData } from '../types';
 
 import { FormFieldRenderer } from './FormFieldRenderer';
@@ -33,15 +32,6 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
     }
 
     if (!parsedData) return;
-
-    const passwordErrors = validatePassword(
-      parsedData.password,
-      parsedData.confirmPassword
-    );
-    if (passwordErrors.length > 0) {
-      setErrors({ password: passwordErrors });
-      return;
-    }
 
     let pictureBase64: string | undefined = undefined;
     const fileInput = form.elements.namedItem(

@@ -1,7 +1,4 @@
-export function validatePassword(
-  password: string,
-  confirmPassword?: string
-): string[] {
+export function validatePassword(password: string): string[] {
   const errors: string[] = [];
 
   if (!/[0-9]/.test(password)) {
@@ -15,9 +12,6 @@ export function validatePassword(
   }
   if (!/[!@#$%^&*]/.test(password)) {
     errors.push('Password must contain at least one special character');
-  }
-  if (confirmPassword !== undefined && password !== confirmPassword) {
-    errors.push('Passwords do not match');
   }
 
   return errors;
