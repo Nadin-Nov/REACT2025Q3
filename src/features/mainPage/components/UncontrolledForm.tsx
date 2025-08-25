@@ -65,7 +65,11 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)} className={styles.form}>
+    <form
+      onSubmit={(e) => void handleSubmit(e)}
+      className={styles.form}
+      data-testid="uncontrolled-form"
+    >
       {formFields.map((field) => (
         <FormFieldRenderer
           key={field.name}
@@ -73,9 +77,14 @@ export const UncontrolledForm: FC<UncontrolledFormProps> = ({ onSubmit }) => {
           errors={errors[field.name] || []}
           countries={countries}
           uncontrolled={true}
+          data-testid={`field-${field.name}`}
         />
       ))}
-      <button type="submit" className={styles.submitButton}>
+      <button
+        type="submit"
+        className={styles.submitButton}
+        data-testid="submit-btn"
+      >
         Submit
       </button>
     </form>

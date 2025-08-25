@@ -37,6 +37,7 @@ export const FormFieldRenderer: FC<Props> = ({
           placeholder={field.placeholder}
           errors={errors}
           uncontrolled={uncontrolled}
+          data-testid={`field-${field.name}`}
         />
       );
 
@@ -48,6 +49,7 @@ export const FormFieldRenderer: FC<Props> = ({
           label={field.label}
           errors={errors}
           uncontrolled={uncontrolled}
+          data-testid={`field-${field.name}`}
         />
       );
 
@@ -72,7 +74,7 @@ export const FormFieldRenderer: FC<Props> = ({
               name={field.name}
               list="countries-list"
               placeholder={field.placeholder}
-              data-testid={`${field.name}-input`}
+              data-testid="country-input"
               {...(uncontrolled ? { defaultValue: '' } : {})}
             />
             <datalist id="countries-list">
@@ -106,6 +108,7 @@ export const FormFieldRenderer: FC<Props> = ({
           type="file"
           errors={errors}
           uncontrolled={uncontrolled}
+          data-testid={`input-${field.name}`}
         />
       );
 

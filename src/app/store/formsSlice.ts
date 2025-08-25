@@ -6,7 +6,7 @@ import type {
   ControlledFormData,
 } from '../../features/mainPage/types';
 
-type FormsState = {
+export type FormsState = {
   uncontrolled: UncontrolledFormData[];
   hookForm: ControlledFormData[];
 };

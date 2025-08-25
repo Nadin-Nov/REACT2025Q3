@@ -22,6 +22,7 @@ export const FormTiles: FC<FormTilesProps> = ({ data }) => (
       {data.map((item, idx) => (
         <div
           key={idx}
+          data-testid="form-tile"
           className={`${styles.tile} ${
             idx === data.length - 1 ? styles.newTile : ''
           }`}

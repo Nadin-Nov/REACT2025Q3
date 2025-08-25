@@ -95,11 +95,9 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
     >
       {formFields.map((field) => {
         const fieldId = `controlled-${field.name}`;
-
         const fieldError = errors[field.name as keyof ControlledFormData] as
           | { message?: string }
           | undefined;
-
         const errorMessages = fieldError?.message
           ? [String(fieldError.message)]
           : [];
@@ -116,6 +114,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
+                    data-testid={fieldId}
                     name={String(ctrlField.name)}
                     label={field.label}
                     placeholder={field.placeholder}
@@ -145,6 +144,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
+                    data-testid={fieldId}
                     name={String(ctrlField.name)}
                     label={field.label}
                     placeholder={field.placeholder}
@@ -160,7 +160,10 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                     }}
                     errors={errorMessages}
                     extra={
-                      <PasswordStrengthIndicator strength={passwordStrength} />
+                      <PasswordStrengthIndicator
+                        strength={passwordStrength}
+                        data-testid={`strength-${field.name}`} // уникальный testid
+                      />
                     }
                   />
                 )}
@@ -176,6 +179,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <RadioField
                     name={String(ctrlField.name)}
+                    data-testid={fieldId}
                     label={field.label}
                     options={field.options || []}
                     value={
@@ -197,6 +201,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <CheckboxField
                     id={fieldId}
+                    data-testid={fieldId}
                     name={String(ctrlField.name)}
                     label={field.label}
                     checked={!!ctrlField.value}
@@ -217,6 +222,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                   render={({ field: ctrlField }) => (
                     <AutocompleteField
                       id={fieldId}
+                      data-testid={fieldId}
                       label={field.label}
                       options={countries}
                       value={
@@ -242,6 +248,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                 render={({ field: ctrlField }) => (
                   <InputField
                     id={fieldId}
+                    data-testid={fieldId}
                     name={String(ctrlField.name)}
                     label={field.label}
                     type="file"
@@ -257,7 +264,12 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
         }
       })}
 
-      <button type="submit" className={styles.submitButton} disabled={!isValid}>
+      <button
+        type="submit"
+        className={styles.submitButton}
+        disabled={!isValid}
+        data-testid="submit-button"
+      >
         Submit
       </button>
     </form>

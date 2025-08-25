@@ -17,7 +17,8 @@ export default defineConfig({
         'src/types/index.ts',
         'src/__tests__/apiResponses.ts',
         'src/__tests__/characters.ts',
-        'src/main.tsx',
+        'src/app/main.tsx',
+        'src/features/mainPage/types.ts',
       ],
       thresholds: {
         statements: 80,

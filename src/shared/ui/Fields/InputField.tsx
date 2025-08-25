@@ -14,6 +14,7 @@ type InputFieldProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   extra?: React.ReactNode;
   uncontrolled?: boolean;
+  'data-testid'?: string;
 };
 
 export const InputField: FC<InputFieldProps> = ({
@@ -27,6 +28,7 @@ export const InputField: FC<InputFieldProps> = ({
   onChange,
   extra,
   uncontrolled = false,
+  'data-testid': testId,
 }) => (
   <div className={styles.formGroup}>
     <label htmlFor={id}>{label}:</label>
@@ -39,6 +41,7 @@ export const InputField: FC<InputFieldProps> = ({
       {...(uncontrolled
         ? { defaultValue: value ?? '' }
         : { value: value ?? '', onChange })}
+      data-testid={testId}
     />
     {extra}
     {errors?.map((err, i) => (
