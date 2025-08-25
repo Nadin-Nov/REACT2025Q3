@@ -113,6 +113,7 @@ export const Modal: FC<ModalProps> = ({
         className={styles.overlay}
         role="presentation"
         tabIndex={-1}
+        data-testid="modal-overlay"
         onClick={handleOverlayClick}
         onKeyDown={handleOverlayKeyDown}
       >
