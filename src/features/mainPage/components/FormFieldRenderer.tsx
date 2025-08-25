@@ -72,6 +72,7 @@ export const FormFieldRenderer: FC<Props> = ({
               name={field.name}
               list="countries-list"
               placeholder={field.placeholder}
+              data-testid={`${field.name}-input`}
               {...(uncontrolled ? { defaultValue: '' } : {})}
             />
             <datalist id="countries-list">
