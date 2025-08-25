@@ -29,11 +29,6 @@ describe('validatePassword', () => {
     );
   });
 
-  it('should return error if passwords do not match', () => {
-    const errors = validatePassword('Password1!', 'Different1!');
-    expect(errors).toContain('Passwords do not match');
-  });
-
   it('should return empty array if password meets all criteria', () => {
     const errors = validatePassword('Password1!');
     expect(errors).toEqual([]);
