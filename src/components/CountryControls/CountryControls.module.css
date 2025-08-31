@@ -1,0 +1,39 @@
+.container {
+  margin-top: 16px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.input {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1 1 200px;
+  max-width: 400px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #333;
+  outline: none;
+}
+
+.select {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 0 0 160px;
+  transition: border-color 0.2s;
+}
+
+.select:hover {
+  border-color: #666;
+}
