@@ -1,8 +1,33 @@
 .card {
-  padding: 8px 12px;
-  margin: 4px 0;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  list-style: none;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
   background-color: #f9f9f9;
+}
+
+.header {
+  margin-bottom: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 0.3rem 0.5rem;
+  text-align: right;
+}
+
+.table th {
+  background-color: #eee;
+  text-align: center;
+}
+
+.highlighted {
+  background-color: #ffff99;
+  transition: background-color 0.5s ease;
 }
