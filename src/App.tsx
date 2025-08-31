@@ -1,5 +1,5 @@
 import type { FC, ChangeEvent } from 'react';
-import { Suspense, useState, useMemo } from 'react';
+import React, { Suspense, useState, useMemo, useCallback } from 'react';
 
 import styles from './App.module.css';
 import CountryControls from './components/CountryControls/CountryControls';
@@ -24,9 +24,21 @@ const App: FC = () => {
   const [sortBy, setSortBy] = useState<'name' | 'population'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const handleYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleYearChange = useCallback((e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(Number(e.target.value));
-  };
+  }, []);
+
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+  }, []);
+
+  const handleSortByChange = useCallback((value: 'name' | 'population') => {
+    setSortBy(value);
+  }, []);
+
+  const handleSortOrderChange = useCallback((value: 'asc' | 'desc') => {
+    setSortOrder(value);
+  }, []);
 
   const filteredSortedCountries = useMemo(() => {
     let result = countries;
@@ -71,15 +83,15 @@ const App: FC = () => {
 
       <CountryControls
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={handleSearchChange}
         sortBy={sortBy}
         sortOrder={sortOrder}
-        onSortByChange={setSortBy}
-        onSortOrderChange={setSortOrder}
+        onSortByChange={handleSortByChange}
+        onSortOrderChange={handleSortOrderChange}
       />
 
       <Suspense fallback={<Spinner fullscreen={false} />}>
-        <CountryTable
+        <MemoizedCountryTable
           countries={filteredSortedCountries}
           selectedYear={selectedYear}
         />
@@ -87,5 +99,7 @@ const App: FC = () => {
     </div>
   );
 };
+
+const MemoizedCountryTable = React.memo(CountryTable);
 
 export default App;
