@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 
 import type { CountryData, YearlyData } from '../../types/co2';
 
@@ -15,12 +16,26 @@ const formatValue = (value: number | undefined) =>
   value !== undefined ? value.toLocaleString() : 'N/A';
 
 const CountryCard: FC<Props> = ({ name, country, selectedYear }) => {
+  const currentYearData: YearlyData | undefined = country.data.find(
+    (d) => d.year === selectedYear
+  );
+
   const latest: YearlyData | undefined = country.data[country.data.length - 1];
+
+  const [isHighlighted, setIsHighlighted] = useState(false);
+
+  useEffect(() => {
+    if (!currentYearData) return;
+    setIsHighlighted(true);
+    const timer = setTimeout(() => setIsHighlighted(false), 500);
+    return () => clearTimeout(timer);
+  }, [selectedYear, currentYearData]);
 
   return (
     <li className={styles.card}>
       <div className={styles.header}>
-        <strong>{name}</strong> — {formatValue(latest?.population)} people
+        <strong>{name}</strong> —{' '}
+        {formatValue(currentYearData?.population ?? latest?.population)} people
         {country.iso_code && <span> ({country.iso_code})</span>}
       </div>
 
@@ -34,19 +49,18 @@ const CountryCard: FC<Props> = ({ name, country, selectedYear }) => {
           </tr>
         </thead>
         <tbody>
-          {country.data.map((yearData) => (
-            <tr
-              key={yearData.year}
-              className={clsx(
-                yearData.year === selectedYear && styles.highlighted
-              )}
-            >
-              <td>{yearData.year}</td>
-              <td>{formatValue(yearData.population)}</td>
-              <td>{formatValue(yearData.co2)}</td>
-              <td>{formatValue(yearData.co2_per_capita)}</td>
+          {currentYearData ? (
+            <tr className={clsx(isHighlighted && styles.highlighted)}>
+              <td>{currentYearData.year}</td>
+              <td>{formatValue(currentYearData.population)}</td>
+              <td>{formatValue(currentYearData.co2)}</td>
+              <td>{formatValue(currentYearData.co2_per_capita)}</td>
             </tr>
-          ))}
+          ) : (
+            <tr>
+              <td colSpan={4}>No data available</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </li>
