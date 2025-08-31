@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FC } from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { FixedSizeList, type ListChildComponentProps } from 'react-window';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
+import { FixedSizeList } from 'react-window';
 
 import type { Co2Dataset, YearlyData } from '../../types/co2';
 
@@ -59,29 +59,41 @@ const CountryTable: FC<Props> = ({
     return () => clearTimeout(timeout);
   }, [selectedYear, countries]);
 
-  const columnFlex: Record<CellKey, number> = {
-    name: 2,
-    year: 1,
-    population: 1,
-    co2: 1,
-    co2_per_capita: 1,
-  };
+  const columnFlex: Record<CellKey, number> = useMemo(
+    () => ({
+      name: 2,
+      year: 1,
+      population: 1,
+      co2: 1,
+      co2_per_capita: 1,
+    }),
+    []
+  );
 
-  const Row: FC<ListChildComponentProps> = ({ index, style }) => {
+  const RowComponent: FC<{ index: number; style: React.CSSProperties }> = ({
+    index,
+    style,
+  }) => {
     const [name, country] = countries[index];
     const yearData = country.data.find((d) => d.year === selectedYear);
     const latest = country.data[country.data.length - 1];
 
-    const cells: { value?: number; key: CellKey }[] = [
-      { value: undefined, key: 'name' },
-      { value: yearData?.year, key: 'year' },
-      { value: yearData?.population ?? latest?.population, key: 'population' },
-      { value: yearData?.co2 ?? latest?.co2, key: 'co2' },
-      {
-        value: yearData?.co2_per_capita ?? latest?.co2_per_capita,
-        key: 'co2_per_capita',
-      },
-    ];
+    const cells = useMemo(
+      () => [
+        { value: undefined, key: 'name' as const },
+        { value: yearData?.year, key: 'year' as const },
+        {
+          value: yearData?.population ?? latest?.population,
+          key: 'population' as const,
+        },
+        { value: yearData?.co2 ?? latest?.co2, key: 'co2' as const },
+        {
+          value: yearData?.co2_per_capita ?? latest?.co2_per_capita,
+          key: 'co2_per_capita' as const,
+        },
+      ],
+      [yearData, latest]
+    );
 
     return (
       <div style={style} className={clsx(styles.row)}>
@@ -103,24 +115,27 @@ const CountryTable: FC<Props> = ({
     );
   };
 
+  const Row = memo(RowComponent);
+  Row.displayName = 'Row';
+
   return (
     <div className={styles.tableContainer}>
       <div className={styles.header}>
-        <div className={styles.cell} style={{ flex: columnFlex['name'] }}>
+        <div className={styles.cell} style={{ flex: columnFlex.name }}>
           Country
         </div>
-        <div className={styles.cell} style={{ flex: columnFlex['year'] }}>
+        <div className={styles.cell} style={{ flex: columnFlex.year }}>
           Year
         </div>
-        <div className={styles.cell} style={{ flex: columnFlex['population'] }}>
+        <div className={styles.cell} style={{ flex: columnFlex.population }}>
           Population
         </div>
-        <div className={styles.cell} style={{ flex: columnFlex['co2'] }}>
+        <div className={styles.cell} style={{ flex: columnFlex.co2 }}>
           CO₂
         </div>
         <div
           className={styles.cell}
-          style={{ flex: columnFlex['co2_per_capita'] }}
+          style={{ flex: columnFlex.co2_per_capita }}
         >
           CO₂ per capita
         </div>
@@ -138,4 +153,4 @@ const CountryTable: FC<Props> = ({
   );
 };
 
-export default CountryTable;
+export default memo(CountryTable);
