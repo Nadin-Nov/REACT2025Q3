@@ -12,3 +12,4 @@ export type CountryData = {
 };
 
 export type Co2Dataset = Record<string, CountryData>;
+export type CellKey = 'name' | 'year' | 'population' | 'co2' | 'co2_per_capita';

@@ -6,18 +6,13 @@ import CountryTable from './components/CountryTable/CountryTable';
 import YearSelector from './components/YearSelector/YearSelector';
 import { co2Resource } from './services/co2Resource';
 import type { Co2Dataset } from './types/co2';
+import { getAllYears, getCountriesArray } from './utils/data';
 
 const App: FC = () => {
   const dataset: Co2Dataset = co2Resource.read();
-  const countries = Object.entries(dataset);
 
-  const allYears = useMemo(() => {
-    const yearsSet = new Set<number>();
-    Object.values(dataset).forEach((country) =>
-      country.data.forEach((yearData) => yearsSet.add(yearData.year))
-    );
-    return Array.from(yearsSet).sort((a, b) => a - b);
-  }, [dataset]);
+  const countries = useMemo(() => getCountriesArray(dataset), [dataset]);
+  const allYears = useMemo(() => getAllYears(dataset), [dataset]);
 
   const [selectedYear, setSelectedYear] = useState<number>(
     allYears[allYears.length - 1]
