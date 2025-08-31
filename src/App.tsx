@@ -2,14 +2,14 @@ import type { FC, ChangeEvent } from 'react';
 import { Suspense, useState, useMemo } from 'react';
 
 import styles from './App.module.css';
-import CountryList from './components/CountryList/CountryList';
+import CountryTable from './components/CountryTable/CountryTable';
 import YearSelector from './components/YearSelector/YearSelector';
 import { co2Resource } from './services/co2Resource';
 import type { Co2Dataset } from './types/co2';
 
 const App: FC = () => {
   const dataset: Co2Dataset = co2Resource.read();
-  const countries = Object.entries(dataset).slice(0, 10);
+  const countries = Object.entries(dataset);
 
   const allYears = useMemo(() => {
     const yearsSet = new Set<number>();
@@ -38,7 +38,7 @@ const App: FC = () => {
       />
 
       <Suspense fallback={<p>Loading CO₂ data…</p>}>
-        <CountryList countries={countries} selectedYear={selectedYear} />
+        <CountryTable countries={countries} selectedYear={selectedYear} />
       </Suspense>
     </div>
   );
