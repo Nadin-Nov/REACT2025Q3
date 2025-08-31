@@ -4,6 +4,7 @@ import { Suspense, useState, useMemo } from 'react';
 import styles from './App.module.css';
 import CountryControls from './components/CountryControls/CountryControls';
 import CountryTable from './components/CountryTable/CountryTable';
+import Spinner from './components/Spinner/Spinner';
 import YearSelector from './components/YearSelector/YearSelector';
 import { co2Resource } from './services/co2Resource';
 import type { Co2Dataset } from './types/co2';
@@ -77,7 +78,7 @@ const App: FC = () => {
         onSortOrderChange={setSortOrder}
       />
 
-      <Suspense fallback={<p>Loading CO₂ data…</p>}>
+      <Suspense fallback={<Spinner fullscreen={false} />}>
         <CountryTable
           countries={filteredSortedCountries}
           selectedYear={selectedYear}

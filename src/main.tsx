@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
+import Spinner from './components/Spinner/Spinner';
 import './global.css';
 
 const root = ReactDOM.createRoot(
@@ -10,6 +11,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback={<Spinner fullscreen={true} />}>
+      <App />
+    </Suspense>
   </React.StrictMode>
 );
