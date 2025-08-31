@@ -1,4 +1,5 @@
 import type { FC, ChangeEvent } from 'react';
+import React from 'react';
 
 import styles from './YearSelector.module.css';
 
@@ -21,4 +22,4 @@ const YearSelector: FC<Props> = ({ allYears, selectedYear, onChange }) => (
   </div>
 );
 
-export default YearSelector;
+export default React.memo(YearSelector);
