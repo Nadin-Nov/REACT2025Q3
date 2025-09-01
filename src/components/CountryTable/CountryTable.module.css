@@ -1,0 +1,52 @@
+.tableContainer {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+}
+
+.header,
+.row {
+  display: flex;
+}
+
+.header {
+  background-color: #f0f0f0;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+}
+
+.header .cell {
+  padding: 0.4rem 0.5rem;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.header .cell:first-child {
+  text-align: left;
+}
+
+.row {
+  border-bottom: 1px solid #eee;
+}
+
+.cell {
+  padding: 0.3rem 0.5rem;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cell:first-child {
+  text-align: left;
+}
+
+.highlighted {
+  background-color: #15e41f70;
+  transition: background-color 1s ease;
+}
