@@ -1,0 +1,44 @@
+.fieldWrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 1rem;
+}
+
+.error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.autocompleteList {
+  position: absolute;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 120px;
+  overflow-y: auto;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+}
+
+.autocompleteItem {
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.autocompleteItem:hover,
+.autocompleteItem:focus {
+  background-color: #f0f0f0;
+}

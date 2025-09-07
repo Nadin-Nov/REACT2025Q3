@@ -1,0 +1,20 @@
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+
+import './styles/global.css';
+
+import App from '../App';
+
+import { store } from './store';
+
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error("Root element with id 'root' not found");
+}
+
+ReactDOM.createRoot(rootElement).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
