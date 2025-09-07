@@ -32,14 +32,15 @@ vi.mock('../../../shared/utils/formHelpers', async () => {
 
       return Promise.resolve({
         data: {
-          name: elements['name'].value,
-          email: elements['email'].value,
-          age: Number(elements['age'].value),
-          password: elements['password'].value,
-          confirmPassword: elements['confirmPassword'].value,
-          gender: (elements['gender'] as HTMLInputElement).value,
-          acceptTnC: (elements['acceptTnC'] as HTMLInputElement).checked,
-          country: elements['country'].value,
+          name: elements['name']?.value || '',
+          email: elements['email']?.value || '',
+          age: Number(elements['age']?.value || 0),
+          password: elements['password']?.value || '',
+          confirmPassword: elements['confirmPassword']?.value || '',
+          gender: (elements['gender'] as HTMLInputElement)?.value || '',
+          acceptTnC:
+            (elements['acceptTnC'] as HTMLInputElement)?.checked || false,
+          country: elements['country']?.value || '',
           picture: undefined,
         },
         errors: null,
@@ -73,13 +74,14 @@ describe('UncontrolledForm', () => {
     onSubmit = vi.fn();
   });
 
-  it('renders form and submit button', () => {
+  it('should render the form and submit button', () => {
     renderWithProvider(<UncontrolledForm onSubmit={onSubmit} />);
+
     expect(screen.getByTestId('uncontrolled-form')).toBeInTheDocument();
     expect(screen.getByTestId('submit-btn')).toBeInTheDocument();
   });
 
-  it('submits form with values', async () => {
+  it('should submit form with values', async () => {
     renderWithProvider(<UncontrolledForm onSubmit={onSubmit} />);
 
     fireEvent.change(screen.getByTestId('field-name'), {

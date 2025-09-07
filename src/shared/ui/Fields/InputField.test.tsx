@@ -6,7 +6,7 @@ import styles from '../../../features/mainPage/components/form.module.css';
 import { InputField } from './InputField';
 
 describe('InputField', () => {
-  it('renders label and input with placeholder', () => {
+  it('should renders label and input with placeholder', () => {
     render(
       <InputField
         id="name"
@@ -21,7 +21,7 @@ describe('InputField', () => {
     expect(input).toBeInTheDocument();
   });
 
-  it('displays error messages and applies error class', () => {
+  it('should displays error messages and applies error class', () => {
     const errors = ['Required', 'Invalid format'];
     render(
       <InputField
@@ -41,7 +41,7 @@ describe('InputField', () => {
     });
   });
 
-  it('renders extra content', () => {
+  it('should renders extra content', () => {
     render(
       <InputField
         id="username"

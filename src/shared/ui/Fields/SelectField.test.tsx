@@ -6,7 +6,7 @@ import { SelectField } from './SelectField';
 const options = ['Male', 'Female', 'Other'];
 
 describe('SelectField', () => {
-  it('renders label and options', () => {
+  it('should renders label and options', () => {
     render(
       <SelectField id="gender" name="gender" label="Gender" options={options} />
     );
@@ -17,7 +17,7 @@ describe('SelectField', () => {
     });
   });
 
-  it('calls onChange in controlled mode', () => {
+  it('should calls onChange in controlled mode', () => {
     const handleChange = vi.fn();
     render(
       <SelectField

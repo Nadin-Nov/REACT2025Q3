@@ -77,7 +77,8 @@ export const controlledFormSchema = z
   })
   .refine(
     (data) =>
-      validatePassword(data.password, data.confirmPassword).length === 0,
+      validatePassword(data.password).length === 0 &&
+      data.password === data.confirmPassword,
     {
       message: 'Passwords do not match or are too weak',
       path: ['confirmPassword'],
@@ -98,7 +99,8 @@ export const uncontrolledFormSchema = z
   })
   .refine(
     (data) =>
-      validatePassword(data.password, data.confirmPassword).length === 0,
+      validatePassword(data.password).length === 0 &&
+      data.password === data.confirmPassword,
     {
       message: 'Passwords do not match or are too weak',
       path: ['confirmPassword'],

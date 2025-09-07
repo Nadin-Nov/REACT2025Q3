@@ -8,7 +8,7 @@ import { store } from './store';
 
 beforeEach(() => {
   const root = document.createElement('div');
-  root.setAttribute('id', 'root');
+  root.id = 'root';
   document.body.appendChild(root);
 });
 
@@ -17,17 +17,14 @@ afterEach(() => {
 });
 
 describe('Main entry point', () => {
-  it('should render App inside root', () => {
-    const rootElement = document.getElementById('root');
-    if (!rootElement) throw new Error("Root element with id 'root' not found");
+  it('should render App inside #root', () => {
+    const rootElement = document.getElementById('root')!;
 
     render(
       <Provider store={store}>
         <App />
       </Provider>,
-      {
-        container: rootElement,
-      }
+      { container: rootElement }
     );
 
     expect(screen.getByText(/Open Hook Modal/i)).toBeInTheDocument();

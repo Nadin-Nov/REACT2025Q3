@@ -162,7 +162,7 @@ export const ControlledForm: FC<ControlledFormProps> = ({ onSubmit }) => {
                     extra={
                       <PasswordStrengthIndicator
                         strength={passwordStrength}
-                        data-testid={`strength-${field.name}`} // уникальный testid
+                        data-testid={`strength-${field.name}`}
                       />
                     }
                   />

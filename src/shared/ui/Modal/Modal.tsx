@@ -22,14 +22,37 @@ export const Modal: FC<ModalProps> = ({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
+  const firstFocusableRef = useRef<HTMLElement | null>(null);
+  const lastFocusableRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     if (open) {
       previousActiveElementRef.current = document.activeElement as HTMLElement;
       dialogRef.current?.showModal();
       dialogRef.current?.focus();
+
+      const dialog = dialogRef.current;
+      if (dialog) {
+        const focusableSelectors = [
+          'a[href]',
+          'button:not([disabled])',
+          'input:not([disabled])',
+          'select:not([disabled])',
+          'textarea:not([disabled])',
+          '[tabindex]:not([tabindex="-1"])',
+        ];
+        const focusableEls = Array.from(
+          dialog.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
+        );
+        firstFocusableRef.current = focusableEls[0] || null;
+        lastFocusableRef.current =
+          focusableEls[focusableEls.length - 1] || null;
+      }
     } else {
       dialogRef.current?.close();
       previousActiveElementRef.current?.focus();
+      firstFocusableRef.current = null;
+      lastFocusableRef.current = null;
     }
   }, [open]);
 
@@ -38,54 +61,38 @@ export const Modal: FC<ModalProps> = ({
       if (e.key === 'Escape') onClose();
     };
     if (open) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
+      document.addEventListener('keydown', handleKeyDown as EventListener);
+      return () =>
+        document.removeEventListener('keydown', handleKeyDown as EventListener);
     }
   }, [open, onClose]);
 
   useEffect(() => {
     if (!open) return;
 
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    const focusableSelectors = [
-      'a[href]',
-      'button:not([disabled])',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'textarea:not([disabled])',
-      '[tabindex]:not([tabindex="-1"])',
-    ];
-    const focusableElements = Array.from(
-      dialog.querySelectorAll<HTMLElement>(focusableSelectors.join(','))
-    );
-
-    const firstEl = focusableElements[0];
-    const lastEl = focusableElements[focusableElements.length - 1];
-
     const handleTab = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return;
-      if (focusableElements.length === 0) {
+      if (!firstFocusableRef.current || !lastFocusableRef.current) {
         e.preventDefault();
         return;
       }
 
       if (e.shiftKey) {
-        if (document.activeElement === firstEl) {
+        if (document.activeElement === firstFocusableRef.current) {
           e.preventDefault();
-          lastEl.focus();
+          lastFocusableRef.current.focus();
         }
       } else {
-        if (document.activeElement === lastEl) {
+        if (document.activeElement === lastFocusableRef.current) {
           e.preventDefault();
-          firstEl.focus();
+          firstFocusableRef.current.focus();
         }
       }
     };
 
-    document.addEventListener('keydown', handleTab);
-    return () => document.removeEventListener('keydown', handleTab);
+    document.addEventListener('keydown', handleTab as EventListener);
+    return () =>
+      document.removeEventListener('keydown', handleTab as EventListener);
   }, [open]);
 
   if (!open) return null;

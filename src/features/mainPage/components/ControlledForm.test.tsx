@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, fireEvent } from '@testing-library/react';
+import type { JSX } from 'react';
 import { Provider } from 'react-redux';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -39,7 +40,7 @@ describe('ControlledForm', () => {
     onSubmit = vi.fn();
   });
 
-  it('updates password field and shows strength', () => {
+  it('should updates password field and shows strength', () => {
     renderWithProvider(<ControlledForm onSubmit={onSubmit} />);
 
     const passwordInput = screen.getByTestId('controlled-password');

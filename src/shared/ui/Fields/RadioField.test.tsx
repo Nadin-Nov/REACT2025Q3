@@ -6,7 +6,7 @@ import { RadioField } from './RadioField';
 const options = ['Male', 'Female', 'Other'];
 
 describe('RadioField', () => {
-  it('renders label and all radio options', () => {
+  it('should renders label and all radio options', () => {
     render(<RadioField name="gender" label="Gender" options={options} />);
     options.forEach((opt) => {
       const radio = screen.getByRole('radio', { name: opt });
@@ -16,7 +16,7 @@ describe('RadioField', () => {
     });
   });
 
-  it('calls onChange in controlled mode', () => {
+  it('should calls onChange in controlled mode', () => {
     const handleChange = vi.fn();
     render(
       <RadioField
@@ -33,7 +33,7 @@ describe('RadioField', () => {
     expect(handleChange).toHaveBeenCalledWith('Female');
   });
 
-  it('sets defaultChecked in uncontrolled mode', () => {
+  it('shouuld sets defaultChecked in uncontrolled mode', () => {
     render(
       <RadioField
         name="gender"
@@ -48,7 +48,7 @@ describe('RadioField', () => {
     expect((radio as HTMLInputElement).checked).toBe(true);
   });
 
-  it('displays error messages', () => {
+  it('should displays error messages', () => {
     const errors = ['Required field', 'Invalid selection'];
     render(
       <RadioField

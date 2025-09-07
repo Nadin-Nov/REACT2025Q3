@@ -24,8 +24,8 @@ const mockData: FormTileData[] = [
   },
 ];
 
-describe('FormTiles', () => {
-  it('renders all tiles correctly', () => {
+describe('FormTiles component', () => {
+  it('should render all tiles with correct content', () => {
     render(<FormTiles data={mockData} />);
 
     expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -46,13 +46,18 @@ describe('FormTiles', () => {
     expect(screen.getByText('Accepted T&C: Yes')).toBeInTheDocument();
     expect(screen.getByText('Accepted T&C: No')).toBeInTheDocument();
 
-    expect(screen.getByAltText('John Doe')).toHaveAttribute('src', 'john.png');
+    const johnImg = screen.getByAltText('John Doe');
+    expect(johnImg).toHaveAttribute('src', 'john.png');
+
     expect(screen.queryByAltText('Jane Smith')).toBeNull();
   });
 
-  it('applies "newTile" class to the last tile', () => {
+  it('should apply "newTile" class to the last tile', () => {
     render(<FormTiles data={mockData} />);
+
     const tiles = screen.getAllByTestId('form-tile');
-    expect(tiles[tiles.length - 1].className).toMatch(/newTile/);
+    const lastTile = tiles[tiles.length - 1];
+
+    expect(lastTile.className).toContain('newTile');
   });
 });
